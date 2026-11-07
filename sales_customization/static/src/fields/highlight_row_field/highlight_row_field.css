@@ -1,0 +1,14 @@
+/* Highlight copied rows without level */
+tr.o_data_row.o_row_highlight_warning td {
+    background-color: #fff3cd !important;
+}
+
+/* Add border-top when level changes */
+tr.o_data_row.o_level_change_border td {
+    border-top: 2px solid #e9371a !important;
+}
+
+/* Highlight rows existing lines */
+tr.o_data_row.o_row_highlight_warning_ext td {
+    background-color: #dceef0 !important;
+}

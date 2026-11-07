@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="project_project_form_view_estimation_inherit" model="ir.ui.view">
+        <field name="name">project.project.form.view.estimation.inherit</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <field name="date" position="after">
+                <field name="project_number"/>
+            </field>
+            <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                <button name="action_open_deliveries"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-truck"
+                    invisible="not delivery_ids">
+                    <field name="delivery_count" widget="statinfo" string="Deliveries"/>
+                </button>
+                <button name="action_open_receipts"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-truck"
+                    invisible="not receipt_ids">
+                    <field name="receipt_count" widget="statinfo" string="Receipts"/>
+                </button>
+                <button
+                    name="action_open_sale_order"
+                    type="object"
+                    string="Sale Orders"
+                    class="oe_stat_button"
+                    icon="fa-pencil-square-o"
+                    invisible="not custom_sale_order_id">
+                    <field name="sale_order_count" widget="statinfo"/>
+                </button>
+                <button
+                    name="action_open_estimations"
+                    type="object"
+                    string="Estimations"
+                    class="oe_stat_button"
+                    icon="fa-file-text-o"
+                    invisible="not custom_estimation_ids">
+                    <field name="estimation_count" widget="statinfo"/>
+                </button>
+                <button
+                    name="action_open_mrp"
+                    type="object"
+                    string="Manufacturing Orders"
+                    class="oe_stat_button"
+                    icon="fa-wrench"
+                    invisible="not custom_mrp_ids">
+                    <field name="mrp_count" widget="statinfo"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>

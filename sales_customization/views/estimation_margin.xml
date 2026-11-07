@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_estimation_margin_list" model="ir.ui.view">
+        <field name="name">estimation.margin.list</field>
+        <field name="model">estimation.margin</field>
+        <field name="arch" type="xml">
+            <list string="Levels">
+                <field name="name"/>
+                <field name="margin"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_estimation_margin_form" model="ir.ui.view">
+        <field name="name">estimation.margin.form</field>
+        <field name="model">estimation.margin</field>
+        <field name="arch" type="xml">
+            <form string="Margin">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="margin"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_estimation_margin" model="ir.actions.act_window">
+        <field name="name">Margin</field>
+        <field name="res_model">estimation.margin</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Margin.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_estimation_margin"
+              name="Margin"
+              parent="sales_customization.menu_sale_estimation_config"
+              action="action_estimation_margin"
+              sequence="10"/>
+
+</odoo>

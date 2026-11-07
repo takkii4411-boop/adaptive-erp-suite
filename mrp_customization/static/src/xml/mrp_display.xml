@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="mrp_customization.StockMove" t-inherit="mrp_workorder.StockMove" t-inherit-mode="extension">
+        <xpath expr="//li[1]/span[hasclass('o_line_label')]" position="replace">
+            <div class="d-flex align-items-center gap-1 mb-auto text-nowrap">
+                <span class="o_line_cnc d-flex flex-column align-items-start me-1 fw-bold lh-sm">
+                    <span class="o_line_label text-wrap text-break" t-att-class="isComplete ? 'text-decoration-line-through opacity-25' : ''" t-out="label"/>
+                    <span class="o_line_comments small fw-normal text-muted" t-if="Comments" t-out="Comments"/>
+                </span>
+            </div>
+            <div class="d-flex align-items-center gap-1 mb-auto text-nowrap">
+                <span class="o_line_cnc d-flex flex-column align-items-start me-1 fw-bold lh-sm">
+                    <span class="o_mrp_record_line_cnc small fw-normal text-muted" t-if="cncNo">CNC</span>
+                    <span class="o_mrp_record_line_cnc_value" t-if="cncNo" t-out="cncNo"/>
+                </span>
+                <button t-on-click.stop="showLogNote" class="o_btn_icon_info btn btn-outline-secondary">
+                    <i class="fa fa-info-circle" title="Log Note" role="img"/>
+                </button>
+            </div>
+        </xpath>
+    </t>
+</templates>

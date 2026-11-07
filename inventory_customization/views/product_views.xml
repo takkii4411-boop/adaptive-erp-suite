@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="product_product_form_inherit_custom_fields" model="ir.ui.view">
+        <field name="name">product.product.form.inherit.custom.fields</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='default_code']" position="attributes">
+                <attribute name="string">Product Code</attribute>
+            </xpath>
+            <xpath expr="//field[@name='sale_ok']" position="before">
+                <group>
+                    <group>
+                        <field name="product_color_id"/>
+                        <field name="product_finish_id"/>
+                        <field name="default_code" string="Product Code" readonly="0"/>
+                        <field name="website_char"/>
+                        <field name="uom_id"/>
+                    </group>
+                    <group>
+                        <field name="standard_price" string="Cost price"/>
+                        <field name="length"/>
+                        <field name="width"/>
+                        <field name="thickness"/>
+                        <field name="categ_id"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_product_purchase_tab_first_move" model="ir.ui.view">
+        <field name="name">product.product.form.purchase.first.move</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="priority" eval="1"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='general_information']" position="before">
+                <xpath expr="//page[@name='purchase']" position="move"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

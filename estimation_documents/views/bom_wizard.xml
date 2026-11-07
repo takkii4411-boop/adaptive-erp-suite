@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_bom_wizard_form_inherited" model="ir.ui.view">
+        <field name="name">bom.wizard.view.form.inherit</field>
+        <field name="model">bom.wizard</field>
+        <field name="inherit_id" ref="sales_customization.view_bom_wizard_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='drawings']" position="after">
+                <page name="shop drawings" string="Shop Drawing No"
+                      invisible="estimation_id and estimation_id.select_all">
+                    <group name="shop_drawing_nos" style="font-size: 9px;">
+                        <div id="shop_drawing_nos_div">
+                            <div class="d-flex align-items-baseline">
+                                <label for="joinery_name"/>
+                                <field name="joinery_name"/>
+                            </div>
+                            <div class="d-flex align-items-baseline">
+                                <label for="shop_drawing_nos"/>
+                                <field name="shop_drawing_nos" widget="many2many_tags" domain="shop_drawing_nos_domain" options="{'no_quick_create': True, 'no_create_edit': True, 'no_open': True}"/>
+                            </div>
+                        </div>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

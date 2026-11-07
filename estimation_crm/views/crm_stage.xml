@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="crm_stage_view_form" model="ir.ui.view">
+        <field name="name">crm.stage.view.form.inherit</field>
+        <field name="model">crm.stage</field>
+        <field name="inherit_id" ref="crm.crm_stage_form"/>
+        <field name="arch" type="xml">
+            <field name="rotting_threshold_days" position="after">
+                <label for="probability" class="d-inline-block"/>
+                <div id="probability" class="d-flex">
+                    <field name="probability" widget="float" class="oe_inline o_input_6ch"/>
+                    <span class="opacity-50">%</span>
+                </div>
+            </field>
+        </field>
+    </record>
+
+    <record id="crm_stage_view_tree" model="ir.ui.view">
+        <field name="name">crm.stage.view.tree.inherit</field>
+        <field name="model">crm.stage</field>
+        <field name="inherit_id" ref="crm.crm_stage_tree"/>
+        <field name="arch" type="xml">
+            <field name="is_won" position="after">
+                <field name="probability" string="Probability (%)" widget="float" class="oe_inline o_input_6ch"/>
+            </field>
+        </field>
+    </record>
+</odoo>

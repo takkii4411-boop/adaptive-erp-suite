@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="mrp_production_form_view_inherited" model="ir.ui.view">
+        <field name="name">mrp.production.form.inherited</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='move_raw_ids']/list/field[@name='operation_id']" position="attributes">
+                <attribute name="column_invisible">False</attribute>
+                <attribute name="string">Consumed in Operation</attribute>
+                <attribute name="optional">show</attribute>
+            </xpath>
+            <xpath expr="//field[@name='move_raw_ids']/list/field[@name='picked']" position="after">
+                <xpath expr="//field[@name='move_raw_ids']/list/field[@name='operation_id']" position="move"/>
+            </xpath>
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="workorder_no"/>
+                <field name="nesting_report_filename" invisible="1"/>
+                    <label for="nesting_report" class="w-100" style="font-size: 0.875rem!important;font-weight: 500!important;"/>
+                    <div class="o_row">
+                        <field name="nesting_report" filename="nesting_report_filename" widget="binary"
+                            options="{'accepted_file_extensions': '.pdf', 'allowed_mime_type' : 'application/pdf'}"/>
+
+                        <button name="action_preview_nesting_report"
+                            type="object"
+                            icon="fa-eye"
+                            invisible="not nesting_report"
+                            class="btn btn-link btn-sm lh-1"/>
+                    </div>
+                <xpath expr="//field[@name='project_id']" position="move"/>
+            </xpath>
+            <xpath expr="//field[@name='move_raw_ids']/list/field[@name='product_id']" position="after">
+                <field name="cnc_number"/>
+            </xpath>
+            <xpath expr="//field[@name='move_raw_ids']/list/field[@name='operation_id']" position="after">
+                <field name="log_note"/>
+            </xpath>
+            <xpath expr="//field[@name='move_raw_ids']/list/field[@name='product_id']" position="before">
+                <field name="cabinet_no" optional="show"/>
+            </xpath>
+            <xpath expr="//field[@name='move_raw_ids']//list" position="inside">
+                <field name="worker" optional="hide"/>
+                <field name="comments" optional="hide"/>
+            </xpath>
+            <xpath expr="//field[@name='move_raw_ids']/list" position="attributes">
+                <attribute name="default_order">cnc_number asc, sequence</attribute>
+            </xpath>
+            <div name="button_box" position="inside">
+                <button class="oe_stat_button" type="object" name="action_view_projects"
+                    icon="fa-puzzle-piece" invisible="project_count == 0">
+                    <field string="Projects" name="project_count" widget="statinfo"/>
+                </button>
+                <button
+                    name="action_open_estimation_bom"
+                    type="object"
+                    string="Estimation"
+                    class="oe_stat_button"
+                    icon="fa-usd"
+                    invisible="not estimation_line_id">
+                    <div class="o_stat_info">
+                       <div class="o_row">
+                           <span class="o_stat_text">Estimation</span>
+                       </div>
+                   </div>
+                </button>
+            </div>
+        </field>
+    </record>
+
+    <record id="mrp_production_custom_filter" model="ir.ui.view">
+        <field name="name">mrp.production.custom.select</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp_workorder.view_mrp_production_filter_shop_floor" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="workorder_no" string="Work Order No" filter_domain="[('workorder_no', 'ilike', self)]"/>
+            </xpath>
+            <xpath expr="//filter[@name='filter_ready']" position="after">
+                <separator/>
+                <filter string="Work Order No" name="filter_workorder_no" domain="[('workorder_no', '!=', False)]"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="mrp_workorder.action_mrp_display" model="ir.actions.client">
+        <field name="context">{
+            'search_default_filter_ready': False,
+            'search_default_ready': True,
+            'search_default_progress': True,
+            'search_view_ref': 'mrp_workorder.view_mrp_production_filter_shop_floor',
+            'search_default_filter_workorder_no': True
+        }</field>
+    </record>
+
+    <record id="mrp_production_tree_view_inherit_custom_button" model="ir.ui.view">
+        <field name="name">mrp.production.tree.inherit.button.on.tree.view</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list" position="attributes">
+                <attribute name="js_class">button_in_tree</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="mrp_routing_workcenter_from_view_inherited_custom" model="ir.ui.view">
+        <field name="name">mrp.routing.workcenter.form.view.inherited.custom</field>
+        <field name="model">mrp.routing.workcenter</field>
+        <field name="inherit_id" ref="mrp.mrp_routing_workcenter_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='workcenter_id']" position="attributes">
+                <attribute name="domain">[]</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="mrp_production_kanban_view_inherit_custom" model="ir.ui.view">
+        <field name="name">mrp.production.kanban</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_kanban_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//footer" position="before">
+                <span><b>Work Order No:</b> <field name="workorder_no" class="me-1"/></span>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="mrp_production_gantt_view_custom" model="ir.ui.view">
+        <field name="name">mrp.production.gantt</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp_workorder.mrp_production_gantt_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//gantt" position="inside">
+                <field name="product_id"/>
+                <field name="workorder_no"/>
+            </xpath>
+            <xpath expr="//gantt" position="attributes">
+                <attribute name="js_class">mrp_gantt</attribute>
+            </xpath>
+            <xpath expr="//gantt" position="attributes">
+                <attribute name="default_group_by">workorder_no</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

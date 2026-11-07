@@ -1,0 +1,616 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_sale_estimation_type_tree" model="ir.ui.view">
+        <field name="name">sale.estimation.tree</field>
+        <field name="model">sale.estimation</field>
+        <field name="arch" type="xml">
+            <list string="Estimator" default_order="name asc">
+                <field name="currency_id" column_invisible="1"/>
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="employee_id"/>
+                <field name="project_type_id"/>
+                <field name="joinery_type"/>
+                <field name="amount_cost" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+                <field name="amount_margin" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+                <field name="amount_total" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+                <field name="status" widget="badge"
+                       decoration-info="status == 'draft'"
+                       decoration-warning="status == 'sent'"
+                       decoration-danger="status == 'cancel'"
+                       decoration-success="status == 'done'" />
+            </list>
+        </field>
+    </record>
+
+    <record id="view_sale_estimation_type_form" model="ir.ui.view">
+        <field name="name">sale.estimation.form</field>
+        <field name="model">sale.estimation</field>
+        <field name="arch" type="xml">
+            <form string="Estimator" js_class="sale_estimation_form">
+                <header>
+                    <!-- Send -->
+                    <button name="action_estimation_send"
+                            type="object"
+                            string="Send by Email"
+                            class="btn-primary"
+                            invisible="status != 'draft'"/>
+
+                    <button name="action_estimation_send"
+                            type="object"
+                            string="Send by Email"
+                            class="btn-secondary"
+                            invisible="status not in ['done', 'sent']"/>
+
+                    <!-- Confirm -->
+                    <button name="action_confirm"
+                            type="object"
+                            string="Confirm"
+                            class="btn-secondary"
+                            invisible="status not in ['draft', 'sent']"/>
+
+                    <!-- Cancel -->
+                    <button name="action_cancel"
+                            type="object"
+                            string="Cancel"
+                            class="btn-secondary"
+                            invisible="status == 'cancel'"/>
+
+                    <!-- Reset to Draft -->
+                    <button name="action_draft"
+                            type="object"
+                            string="Reset to Draft"
+                            invisible="status not in ['cancel']"/>
+
+                    <field name="status" nolabel="1" colspan="2" statusbar_visible="draft,sent,done"
+                           widget="statusbar" options="{'clickable': '1'}"/>
+                </header>
+                <!--                <sheet>-->
+                <div name="button_box" position="inside">
+                    <button class="oe_stat_button" type="object" name="action_view_estimations"
+                            icon="fa-usd" invisible="estimations_count == 0">
+                        <field string="Estimations" name="estimations_count" widget="statinfo"/>
+                    </button>
+                </div>
+                <group style="justify-content:start;border-bottom:1px solid #E6E6E6;">
+                    <div class="col-lg-12" style="text-align:start;">
+                        <button type="object"
+                            name="toggle_details"
+                            string="Show Details"
+                            invisible="not display_details"
+                            class="btn btn-secondary">
+                            <i class="oi oi-fw oi-panel-right fa-flip-horizontal"/>
+                        </button>
+                        <button type="object"
+                            name="toggle_details"
+                            string="Hide Details"
+                            invisible="display_details"
+                            class="btn btn-secondary">
+                            <i class="oi oi-fw oi-panel-right fa-flip-horizontal"/>
+                        </button>
+                        <span style="margin-left:4px;"/>
+                        <button name="action_export_selected_xlsx"
+                            type="object"
+                            string="Export">
+                            <i class="fa fa-upload me-1"/>Export
+                        </button>
+                    </div>
+
+                    <group string="Details" invisible="display_details" style="width:27%;font-size: 11px;border-right:1px solid #E6E6E6;border-top:1px solid #E6E6E6;padding-right: 0;display: block;">
+                        <div class="oe_title" style="max-width:93%!important;">
+                            <div class="d-flex align-items-baseline">
+                                <h5>
+                                    <span>Estimation No.</span>
+                                </h5>
+                                <h5 style="margin-left:15px;">
+                                    <field name="name" placeholder="e.g. Residential, Commercial..." readonly="1"/>
+                                </h5>
+                            </div>
+                            <group>
+                                <div id="estimation_left">
+                                    <field name="currency_id" invisible="1"/>
+                                    <div class="d-flex align-items-baseline">
+                                        <label for="project_id"/>
+                                        <field name="project_id"/>
+                                    </div>
+                                    <div class="d-flex align-items-baseline">
+                                        <label for="employee_id"/>
+                                        <field name="employee_id"/>
+                                    </div>
+                                    <div class="d-flex align-items-baseline">
+                                        <label for="project_type_id"/>
+                                        <field name="project_type_id"/>
+                                    </div>
+                                    <div class="d-flex align-items-baseline">
+                                        <label for="joinery_type"/>
+                                        <field name="joinery_type"/>
+                                    </div>
+                                </div>
+                            </group>
+                            <notebook>
+                                <page string="Builders" name="builders">
+                                    <field name="builder_ids">
+                                        <list editable="bottom">
+                                            <field name="partner_id" domain="partner_domain"/>
+                                            <field name="status"/>
+                                            <field name="is_mail_sent"/>
+                                            <field name="winner"/>
+                                            <field name="is_client"/>
+                                        </list>
+                                    </field>
+                                </page>
+                                <page string="Sub-Contractors" name="sub_contractors">
+                                    <field name="subcontractor_ids">
+                                        <list editable="bottom">
+                                            <field name="partner_id"/>
+                                            <field name="status"/>
+                                            <field name="winner"/>
+                                        </list>
+                                    </field>
+                                </page>
+                                <page string="Internal Review" name="internal_review">
+                                    <group name="internal_review_group">
+                                        <field name="internal_review" nolabel="1"
+                                               placeholder="Internal Review..."/>
+                                    </group>
+                                </page>
+                            </notebook>
+                            <group>
+                                <notebook>
+                                    <page string="Exclusions" name="exclusions">
+                                        <group name="exclusions_group">
+                                            <field name="exclusions" nolabel="1" placeholder="Standard Exclusions..."/>
+                                        </group>
+                                        <group name="custom_exclusions_group">
+                                            <field name="custom_exclusions" nolabel="1" placeholder="Custom Exclusions..."/>
+                                        </group>
+                                    </page>
+                                    <page string="Project Specific Notes" name="standard_notes">
+                                        <group name="standard_notes_group">
+                                            <field name="standard_notes" nolabel="1"
+                                                   placeholder="Project Specific Notes..."/>
+                                        </group>
+                                    </page>
+                                    <page string="Terms &amp; Conditions" name="terms_condition">
+                                        <group name="terms_condition_group">
+                                            <field name="terms_condition" nolabel="1"
+                                                   placeholder="Terms &amp; Conditions..."/>
+                                        </group>
+                                    </page>
+                                </notebook>
+                            </group>
+                            <group string="Comments" name="comments_group" style="display: block;">
+                                <field name="comments" nolabel="1" placeholder="Comments..."/>
+                            </group>
+                        </div>
+                    </group>
+                    <group name="not_display_details" invisible="not display_details" style="width:100%;font-size: 11px;border-top:1px solid #E6E6E6;" string="Joinery Items">
+                        <div class="col-lg-12" style="text-align:end;">
+                            <button type="object" class="btn btn-link" name="action_materials_open">Materials</button>
+                        </div>
+                        <div class="estimation_filter_wrapper" style="display: flex; padding-bottom: 8px; border-bottom: 1px solid #dee2e6; margin-bottom: 0; align-items: center;">
+                            <!-- Filters label - aligned with checkbox column -->
+                            <div class="filter-cell" style="flex-shrink: 0; padding: 0 4px; font-weight: bold; display: flex; align-items: center; justify-content: center;">
+                                Filters:
+                                <div class="d-flex select-all-div" style="padding: 4px 0 8px 0; align-items: center;">
+                                    <field name="select_all" nolabel="1"/>
+                                    <button type="object" invisible="not select_all" name="action_open_bom_all"
+                                            class="btn btn-link oi o_external_button px-1 oi-arrow-right"
+                                            style="margin-left: 8px;"/>
+                                </div>
+                            </div>
+                            <!-- Button column spacer -->
+                            <div class="filter-cell" style="flex-shrink: 0; padding: 0 4px;"></div>
+                            <div class="filter-cell" style="flex-shrink: 0; padding: 0 4px;"></div>
+                            <!-- Filter for level_id -->
+                            <div class="filter-cell" style="flex-shrink: 0; padding: 0 4px;">
+                                <field name="filter_level" placeholder="Level" nolabel="1" options="{'no_quick_create': True, 'no_create_edit': True, 'no_open': True}"/>
+                            </div>
+                            <!-- Filter for product_id -->
+                            <div class="filter-cell" style="flex-shrink: 0; padding: 0 4px;">
+                                <field name="filter_product_id" placeholder="Joinery No" nolabel="1" options="{'no_quick_create': True, 'no_create_edit': True, 'no_open': True}" domain="filter_product_domain"/>
+                            </div>
+                            <!-- Filter for joinery_name -->
+                            <div class="filter-cell" style="flex-shrink: 0; padding: 0 4px;">
+                                <field name="filter_joinery_name" placeholder="Joinery Name" nolabel="1" options="{'no_quick_create': True, 'no_create_edit': True, 'no_open': True}" domain="filter_joinery_name_domain"/>
+                            </div>
+                            <!-- Spacer for cl_no (hidden) - not visible so skip in alignment -->
+                            <!-- Filter for description -->
+                            <div class="filter-cell" style="flex-shrink: 0; padding: 0 4px;">
+                                <field name="filter_description" placeholder="Description" nolabel="1"/>
+                            </div>
+                            <!-- Spacer for description button -->
+                            <div class="filter-cell" style="flex-shrink: 0; padding: 0 4px;"></div>
+                            <!-- Spacer for stage (hidden) - not visible so skip in alignment -->
+                            <!-- Filter for room -->
+                            <div class="filter-cell" style="flex-shrink: 0; padding: 0 4px;">
+                                <field name="filter_room" placeholder="Room" nolabel="1"/>
+                            </div>
+                            <!-- Filter for stage -->
+                            <div class="filter-cell" style="flex-shrink: 0; padding: 0 4px;">
+                                <field name="filter_stage" placeholder="Stage" nolabel="1"/>
+                            </div>
+                            <!-- Filter for drawing_number -->
+                            <div class="filter-cell" style="flex-shrink: 0; padding: 0 4px;">
+                                <field name="filter_drawing_no" placeholder="Arch Drawing No" nolabel="1"/>
+                            </div>
+                            <!-- Filter for internal_notes -->
+                            <div class="filter-cell" style="flex-shrink: 0; padding: 0 4px;">
+                                <field name="filter_internal_notes" placeholder="Internal Notes" nolabel="1"/>
+                            </div>
+                            <!-- Filter for custom_exclusion -->
+                            <div class="filter-cell" style="flex-shrink: 0; padding: 0 4px;">
+                                <field name="filter_custom_exclusion" placeholder="Custom Exclusion" nolabel="1"/>
+                            </div>
+                            <!-- Spacers for qty, price_unit, price_total -->
+                            <div class="filter-cell" style="flex-shrink: 0; padding: 0 4px;"></div>
+                            <div class="filter-cell" style="flex-shrink: 0; padding: 0 4px;"></div>
+                            <!-- Action buttons -->
+                            <div style="flex: 1; display: flex; justify-content: flex-end; gap: 8px; align-items: center;">
+                                <button type="object" class="btn btn-link btn-sm" name="action_clear_all">Clear</button>
+                                <button type="object" class="btn btn-link btn-sm" name="action_add_lines">Copy</button>
+                            </div>
+                        </div>
+
+                        <field name="estimation_line_ids" widget="estimation_line_x2many">
+                            <list editable="bottom" limit="1000">
+                                <field name="is_select" nolabel="1" widget="highlight_row_boolean"/>
+                                <button type="object" name="action_open_bom"
+                                        class="btn btn-link text-action oi o_external_button px-1 oi-arrow-right"/>
+                                <field name="currency_id" column_invisible="1"/>
+                                <field name="is_not_active"/>
+                                <field name="level_id"/>
+                                <field name="joinery_type" optional="hide"/>
+                                <field name="product_id" domain="product_domain" context="{'default_joinery_type': joinery_type}"/>
+                                <field name="joinery_name_id"/>
+                                <field name="cl_no" column_invisible="1"/>
+                                <field name="description" readonly="1"/>
+                                <button name="action_open_description_popup"
+                                type="object"
+                                string=""
+                                icon="fa-file-text-o"
+                                context="{'click_from_list': True}"/>
+                                <field name="room"/>
+                                <field name="stage"/>
+                                <field name="drawing_number"/>
+                                <field name="internal_notes" class="o_details_hidden"/>
+                                <button name="action_open_internal_notes_popup"
+                                        type="object"
+                                        string=""
+                                        icon="fa-file-text-o"
+                                        context="{'click_from_list': True}"/>
+                                <field name="custom_exclusion" class="o_details_hidden"/>
+                                <button name="action_open_custom_exclusion_popup"
+                                        type="object"
+                                        string=""
+                                        icon="fa-file-text-o"
+                                        context="{'click_from_list': True}"/>
+                                <field name="qty"/>
+                                <field name="total_cost"/>
+                                <field name="price_unit" widget='monetary'
+                                       options="{'currency_field': 'currency_id'}"/>/>
+                                <field name="tax_ids" widget="many2many_tags"/>
+                                <field name="total_margin"/>
+                                <field name="price_subtotal" widget='monetary' string="Total"
+                                       options="{'currency_field': 'currency_id'}"/>
+                                <field name="price_total" widget='monetary' string="Tax Incl." optional="hide"
+                                       options="{'currency_field': 'currency_id'}"/>
+                                <field name="is_copied_line" column_invisible="1" nolabel="1"/>
+                                <field name="is_existing_line" column_invisible="1" nolabel="1"/>
+                                <field name="parent_id" column_invisible="1" nolabel="1"/>
+                            </list>
+                        </field>
+                        <group class="oe_subtotal_footer d-flex order-0 order-lg-1 flex-column gap-0 estimation_total_footer"
+                               name="sale_estimation_total">
+                            <div class="d-flex align-items-baseline">
+                                <label for="amount_untaxed"/>
+                                <field name="amount_untaxed" widget='monetary'
+                                       options="{'currency_field': 'currency_id'}" readonly="1"/>
+                            </div>
+                            <div class="d-flex align-items-baseline">
+                                <label for="amount_tax"/>
+                                <field name="amount_tax" widget='monetary'
+                                       options="{'currency_field': 'currency_id'}" readonly="1"/>
+                            </div>
+                            <div class="d-flex align-items-baseline">
+                                <label for="amount_margin"/>
+                                <field name="amount_margin" widget='monetary'
+                                       options="{'currency_field': 'currency_id'}" readonly="1"/>
+                            </div>
+                            <div class="d-flex align-items-baseline">
+                                <label for="amount_total"/>
+                                <field name="amount_total" widget='monetary'
+                                       options="{'currency_field': 'currency_id'}" readonly="1"/>
+                            </div>
+                        </group>
+                    </group>
+                    <group name="display_details" invisible="display_details" style="width:73%;font-size: 11px;border-top:1px solid #E6E6E6;" string="Joinery Items">
+                        <div class="col-lg-12" style="text-align:end;">
+                            <button type="object" class="btn btn-link" name="action_materials_open">Materials</button>
+                        </div>
+                        <div class="estimation_filter_wrapper" style="display: flex; padding-bottom: 8px; border-bottom: 1px solid #dee2e6; margin-bottom: 0; align-items: center;">
+                            <!-- Filters label - aligned with checkbox column -->
+                            <div class="filter-cell" style="flex-shrink: 0; padding: 0 4px; font-weight: bold; display: flex; align-items: center; justify-content: center;">
+                                Filters:
+                                <div class="d-flex select-all-div" style="padding: 4px 0 8px 0; align-items: center;">
+                                    <field name="select_all" nolabel="1"/>
+                                    <button type="object" invisible="not select_all" name="action_open_bom_all"
+                                            class="btn btn-link oi o_external_button px-1 oi-arrow-right"
+                                            style="margin-left: 8px;"/>
+                                </div>
+                            </div>
+                            <!-- Button column spacer -->
+                            <div class="filter-cell" style="flex-shrink: 0; padding: 0 4px;"></div>
+                            <div class="filter-cell" style="flex-shrink: 0; padding: 0 4px;"></div>
+                            <!-- Filter for level_id -->
+                            <div class="filter-cell" style="flex-shrink: 0; padding: 0 4px;">
+                                <field name="filter_level" placeholder="Level" nolabel="1" options="{'no_quick_create': True, 'no_create_edit': True, 'no_open': True}"/>
+                            </div>
+                            <!-- Filter for product_id -->
+                            <div class="filter-cell" style="flex-shrink: 0; padding: 0 4px;">
+                                <field name="filter_product_id" placeholder="Joinery No" nolabel="1" options="{'no_quick_create': True, 'no_create_edit': True, 'no_open': True}" domain="filter_product_domain"/>
+                            </div>
+                            <!-- Filter for joinery_name -->
+                            <div class="filter-cell" style="flex-shrink: 0; padding: 0 4px;">
+                                <field name="filter_joinery_name" placeholder="Joinery Name" nolabel="1" options="{'no_quick_create': True, 'no_create_edit': True, 'no_open': True}" domain="filter_joinery_name_domain"/>
+                            </div>
+                            <!-- Spacer for cl_no (hidden) - not visible so skip in alignment -->
+                            <!-- Filter for description -->
+                            <div class="filter-cell" style="flex-shrink: 0; padding: 0 4px;">
+                                <field name="filter_description" placeholder="Description" nolabel="1"/>
+                            </div>
+                            <!-- Spacer for description button -->
+                            <div class="filter-cell" style="flex-shrink: 0; padding: 0 4px;"></div>
+                            <!-- Spacer for stage (hidden) - not visible so skip in alignment -->
+                            <!-- Filter for room -->
+                            <div class="filter-cell" style="flex-shrink: 0; padding: 0 4px;">
+                                <field name="filter_room" placeholder="Room" nolabel="1"/>
+                            </div>
+                            <!-- Filter for stage -->
+                            <div class="filter-cell" style="flex-shrink: 0; padding: 0 4px;">
+                                <field name="filter_stage" placeholder="Stage" nolabel="1"/>
+                            </div>
+                            <!-- Filter for drawing_number -->
+                            <div class="filter-cell" style="flex-shrink: 0; padding: 0 4px;">
+                                <field name="filter_drawing_no" placeholder="Arch Drawing No" nolabel="1"/>
+                            </div>
+                            <!-- Filter for internal_notes -->
+                            <div class="filter-cell" style="flex-shrink: 0; padding: 0 4px;">
+                                <field name="filter_internal_notes" placeholder="Internal Notes" nolabel="1"/>
+                            </div>
+                            <!-- Filter for custom_exclusion -->
+                            <div class="filter-cell" style="flex-shrink: 0; padding: 0 4px;">
+                                <field name="filter_custom_exclusion" placeholder="Custom Exclusion" nolabel="1"/>
+                            </div>
+                            <!-- Spacers for qty, price_unit, price_total -->
+                            <div class="filter-cell" style="flex-shrink: 0; padding: 0 4px;"></div>
+                            <div class="filter-cell" style="flex-shrink: 0; padding: 0 4px;"></div>
+                            <!-- Action buttons -->
+                            <div style="flex: 1; display: flex; justify-content: flex-end; gap: 8px; align-items: center;">
+                                <button type="object" class="btn btn-link btn-sm" name="action_clear_all">Clear</button>
+                                <button type="object" class="btn btn-link btn-sm" name="action_add_lines">Copy</button>
+                            </div>
+                        </div>
+
+                        <field name="estimation_line_ids" widget="estimation_line_x2many">
+                            <list editable="bottom" limit="1000">
+                                <field name="is_select" nolabel="1" widget="highlight_row_boolean"/>
+                                <button type="object" name="action_open_bom"
+                                        class="btn btn-link text-action oi o_external_button px-1 oi-arrow-right"/>
+                                <field name="currency_id" column_invisible="1"/>
+                                <field name="is_not_active"/>
+                                <field name="level_id"/>
+                                <field name="joinery_type" optional="hide"/>
+                                <field name="product_id" domain="product_domain"/>
+                                <field name="joinery_name_id"/>
+                                <field name="cl_no" column_invisible="1"/>
+                                <field name="description" readonly="1"/>
+                                <button name="action_open_description_popup"
+                                type="object"
+                                string=""
+                                icon="fa-file-text-o"
+                                context="{'click_from_list': True}"/>
+                                <field name="room"/>
+                                <field name="stage"/>
+                                <field name="drawing_number"/>
+                                <field name="internal_notes"/>
+                                <button name="action_open_internal_notes_popup"
+                                        type="object"
+                                        string=""
+                                        icon="fa-file-text-o"
+                                        context="{'click_from_list': True}"/>
+                                <field name="custom_exclusion"/>
+                                <button name="action_open_custom_exclusion_popup"
+                                        type="object"
+                                        string=""
+                                        icon="fa-file-text-o"
+                                        context="{'click_from_list': True}"/>
+                                <field name="qty"/>
+                                <field name="total_cost"/>
+                                <field name="price_unit" widget='monetary'
+                                       options="{'currency_field': 'currency_id'}"/>/>
+                                <field name="tax_ids" widget="many2many_tags"/>
+                                <field name="total_margin"/>
+                                <field name="price_subtotal" widget='monetary' string="Total"
+                                       options="{'currency_field': 'currency_id'}"/>
+                                <field name="price_total" widget='monetary' string="Tax Incl." optional="hide"
+                                       options="{'currency_field': 'currency_id'}"/>
+                                <field name="is_copied_line" column_invisible="1" nolabel="1"/>
+                                <field name="is_existing_line" column_invisible="1" nolabel="1"/>
+                                <field name="parent_id" column_invisible="1" nolabel="1"/>
+                            </list>
+                        </field>
+                        <group class="oe_subtotal_footer d-flex order-0 order-lg-1 flex-column gap-0 estimation_total_footer"
+                               name="sale_estimation_total">
+                            <div class="d-flex align-items-baseline">
+                                <label for="amount_untaxed"/>
+                                <field name="amount_untaxed" widget='monetary'
+                                       options="{'currency_field': 'currency_id'}" readonly="1"/>
+                            </div>
+                            <div class="d-flex align-items-baseline">
+                                <label for="amount_tax"/>
+                                <field name="amount_tax" widget='monetary'
+                                       options="{'currency_field': 'currency_id'}" readonly="1"/>
+                            </div>
+                            <div class="d-flex align-items-baseline">
+                                <label for="amount_margin"/>
+                                <field name="amount_margin" widget='monetary'
+                                       options="{'currency_field': 'currency_id'}" readonly="1"/>
+                            </div>
+                            <div class="d-flex align-items-baseline">
+                                <label for="amount_total"/>
+                                <field name="amount_total" widget='monetary'
+                                       options="{'currency_field': 'currency_id'}" readonly="1"/>
+                            </div>
+                        </group>
+                    </group>
+                </group>
+                <!--                </sheet>-->
+                <div class="o_chatter_position">
+                    <div class="o_chatter_topbar my-2">
+                        <div>
+                            <button type="object"
+                                    name="toggle_chatter"
+                                    string="Show Chatter"
+                                    class="btn btn-sm btn-secondary">
+                                    <i class="oi oi-fw oi-panel-right fa-flip-horizontal"/>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div invisible="not show_chatter">
+                        <chatter/>
+                    </div>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_sale_estimation_search" model="ir.ui.view">
+        <field name="name">sale.estimation.search</field>
+        <field name="model">sale.estimation</field>
+        <field name="arch" type="xml">
+            <search string="Estimator">
+
+                <!-- Standard Search Fields -->
+                <field name="name"/>
+                <field name="project_id"/>
+                <field name="employee_id"/>
+                <field name="project_type_id"/>
+                <field name="joinery_type"/>
+                <field name="status"/>
+
+                <!-- Filters -->
+                <filter name="filter_draft" string="Draft" domain="[('status','=','draft')]"/>
+                <filter name="filter_sent" string="Sent" domain="[('status','=','sent')]"/>
+                <filter name="filter_done" string="Completed" domain="[('status','=','done')]"/>
+
+                <!-- Group by -->
+                <group>
+                    <filter name="group_project" string="Project" context="{'group_by': 'project_id'}"/>
+                    <filter name="group_employee" string="Employee" context="{'group_by': 'employee_id'}"/>
+                    <filter name="group_type" string="Project Type" context="{'group_by': 'project_type_id'}"/>
+                    <filter name="group_joinery" string="Joinery Type" context="{'group_by': 'joinery_type'}"/>
+                    <filter name="group_activity_type" string="Activity Type" context="{'group_by': 'custom_activity_type_id'}"/>
+                    <filter name="group_status" string="Status" context="{'group_by': 'status'}"/>
+                </group>
+
+            </search>
+        </field>
+    </record>
+
+    <record id="action_sale_estimation_type" model="ir.actions.act_window">
+        <field name="name">Estimator</field>
+        <field name="res_model">sale.estimation</field>
+        <field name="view_mode">list,activity,form</field>
+        <field name="search_view_id" ref="sales_customization.view_sale_estimation_search"/>
+    </record>
+
+    <menuitem id="menu_sale_estimation_type"
+              name="Estimator"
+              web_icon="sales_customization,static/description/icon.png"/>
+
+    <menuitem id="menu_sale_estimation_type_sub"
+              name="Estimations"
+              parent="menu_sale_estimation_type"
+              action="action_sale_estimation_type" sequence="1"/>
+
+    <menuitem id="menu_sale_estimation_config"
+              name="Configuration"
+              parent="menu_sale_estimation_type" sequence="99"/>
+
+
+    <record id="action_sale_estimation" model="ir.actions.server">
+        <field name="name">Update</field>
+        <field name="model_id" ref="model_sale_estimation"/>
+        <field name="binding_model_id" ref="model_sale_estimation"/>
+        <field name="binding_view_types">form</field>
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+            action = records.action_update()
+        </field>
+    </record>
+
+<!--    <record id="action_sale_estimation_export" model="ir.actions.server">-->
+<!--        <field name="name">Export</field>-->
+<!--        <field name="model_id" ref="model_sale_estimation"/>-->
+<!--        <field name="binding_model_id" ref="model_sale_estimation"/>-->
+<!--        <field name="binding_view_types">form</field>-->
+<!--        <field name="state">code</field>-->
+<!--        <field name="code">-->
+<!--            if records:-->
+<!--                action = records.action_export_selected_xlsx()-->
+<!--        </field>-->
+<!--    </record>-->
+
+    <record id="view_sale_estimation_line_description_wizard_form" model="ir.ui.view">
+        <field name="name">sale.estimation.line.description.wizard.form</field>
+        <field name="model">sale.estimation.line.description.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Description">
+                <sheet>
+                    <field name="description" nolabel="1" widget="html"/>
+                </sheet>
+                <footer>
+                    <button string="Save" type="object" name="action_save_description" class="btn-primary"/>
+                    <button string="Close" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_sale_estimation_line_internal_notes_wizard_form" model="ir.ui.view">
+        <field name="name">sale.estimation.line.internal.notes.wizard.form</field>
+        <field name="model">sale.estimation.line.internal.notes.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Internal Notes">
+                <sheet>
+                    <field name="internal_notes" nolabel="1"/>
+                </sheet>
+                <footer>
+                    <button string="Save" type="object" name="action_save_internal_notes" class="btn-primary"/>
+                    <button string="Close" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_sale_estimation_line_custom_exclusion_wizard_form" model="ir.ui.view">
+        <field name="name">sale.estimation.line.custom.exclusion.wizard.form</field>
+        <field name="model">sale.estimation.line.custom.exclusion.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Custom Exclusion">
+                <sheet>
+                    <field name="custom_exclusion" nolabel="1"/>
+                </sheet>
+                <footer>
+                    <button string="Save" type="object" name="action_save_custom_exclusion" class="btn-primary"/>
+                    <button string="Close" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

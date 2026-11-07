@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_material_hardware_details_form" model="ir.ui.view">
+        <field name="name">material.hardware.details.form</field>
+        <field name="model">material.hardware.details</field>
+        <field name="arch" type="xml">
+            <form string="Material &amp; Hardware Details" js_class="wizard_form" class="material_hardware_details">
+                <header>
+                    <button name="action_export_to_excel" string="Export to Excel" type="object" class="btn-primary" icon="fa-file-excel-o"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="estimation_id" readonly="1"/>
+                        <field name="project_id" readonly="1"/>
+                    </group>
+
+                    <notebook>
+                        <page string="Materials &amp; Hardware">
+                            <field name="line_ids">
+                                <list editable="bottom" default_order='sort_no'>
+                                    <field name="currency_id" column_invisible="1"/>
+                                    <field name="sort_no"/>
+                                    <field name="categ_id"/>
+                                    <field name="product_id"/>
+                                    <field name="product_code"/>
+                                    <field name="product_color_id"/>
+                                    <field name="product_finish_id"/>
+                                    <field name="supplier_id"/>
+                                    <field name="sub_con"/>
+                                    <field name="arch_code"/>
+                                    <field name="uom_id"/>
+                                    <field name="rate" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                    <field name="qty"/>
+                                    <field name="sub_total" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                    <field name="margin"/>
+                                    <field name="comments"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Sub-Contractors">
+                            <field name="sub_contractor_bom_line_ids">
+                                <list editable="bottom">
+                                    <field name="currency_id" column_invisible="1"/>
+                                    <field name="product_id" required="1"  options="{'no_quick_create': True, 'no_create_edit': True}"/>
+                                    <field name="subcontractor" options="{'no_quick_create': True, 'no_create_edit': True, 'no_open': True}"/>
+                                    <field name="description"/>
+                                    <field name="name" string="Joinery No." readonly="1"/>
+                                    <field name="rate" widget='monetary'
+                                            options="{'currency_field': 'currency_id'}"/>/>
+                                    <field name="quantity"/>
+                                    <field name="uom"/>
+                                    <field name="margin"/>
+                                    <field name="margin" string="Initial Margin (%)"/>
+                                    <field name="margin_diff" readonly="1"/>
+                                    <field name="margin_all" string="Total Margin (%)"/>
+                                    <field name="subtotal" widget='monetary'
+                                           options="{'currency_field': 'currency_id'}" readonly="1"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <footer>
+                    <button string="Save &amp; Close" class="btn-primary" type="object" name="action_save_and_close"/>
+                    <button string="Discard" class="btn-secondary" special="cancel" confirm="Are you sure to discard the changes?"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

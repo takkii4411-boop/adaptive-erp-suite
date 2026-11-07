@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_material_list_form_inherit_multiselect" model="ir.ui.view">
+        <field name="name">material.list.form.inherit.multiselect</field>
+        <field name="model">material.list</field>
+        <field name="inherit_id" ref="sales_customization.view_material_list_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']/list/field[@name='name']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_uom']" position="attributes">
+                <attribute name="string">UOM</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']" position="attributes">
+                <attribute name="class">material_line_class</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list" position="inside">
+                <control>
+                    <button name="action_add_material_from_catalog"
+                            string="Add Materials"
+                            type="object"
+                            class="btn btn-link"
+                            context="{'order_id': parent.id}"/>
+                </control>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list/field[@name='rate']" position="before">
+                <field name="currency_id" column_invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list/field[@name='rate']" position="attributes">
+                <attribute name="widget">monetary</attribute>
+                <attribute name="options">{'currency_field': 'currency_id'}</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="report_purchaseorder_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-if="not company">
+                    <t t-if="company_id">
+                        <t t-set="company" t-value="company_id"/>
+                    </t>
+                    <t t-elif="o and 'company_id' in o and o.company_id.sudo()">
+                        <t t-set="company" t-value="o.company_id.sudo()"/>
+                    </t>
+                    <t t-else="else">
+                        <t t-set="company" t-value="res_company"/>
+                    </t>
+                </t>
+                <t t-call="web.basic_layout">
+                    <t t-call="purchase_report.static_po_header"/>
+                    <!-- ================= PAGE 1 ================= -->
+                    <div class="page">
+                        <div style="height:10px;"></div>
+                        <!-- TOP SECTION -->
+                        <table style="width:100%; margin-top:20px; color: #000; border: 1px solid #fff !important; border-collapse: collapse; border-spacing: 0;"
+                               cellspacing="0" cellpadding="0" border="0">
+                            <tr style="border: 1px solid #fff !important;">
+                                <td style="width:40%; vertical-align:top; line-height: 1.2; border: 1px solid #fff !important; border-top: none !important;">
+                                    <div style="font-size: 18px;padding-left:15px;border: 1px solid #fff !important;">
+                                        <t t-esc="o.partner_id.name"/>
+                                        <br/>
+                                        <t t-esc="o.partner_id.street"/>
+                                        <t t-esc="o.partner_id.street2"/>
+                                        <t t-esc="o.partner_id.city"/>
+                                        <t t-esc="o.partner_id.state_id.code"/>
+                                        <t t-esc="o.partner_id.zip"/>
+                                        <br/>
+                                        <t t-esc="o.partner_id.email"/>
+                                        <br/>
+                                        <t t-esc="o.partner_id.phone"/>
+                                    </div>
+                                </td>
+
+                                <td style="width:60%; vertical-align:top; border: 1px solid #fff !important; border-top: none !important;">
+                                    <table style="width:100%; border: none !important; border-collapse: collapse; border-spacing: 0;"
+                                           cellspacing="0" cellpadding="0" border="0">
+                                        <tr style="border: 1px solid #fff !important;">
+                                            <td style="text-align: right; font-weight: bold; font-size: 22px; padding-right: 60px; white-space: nowrap; border: 1px solid #fff !important; border-top: none !important;">
+                                                PURCHASE ORDER
+                                            </td>
+                                            <td style="text-align: right; font-weight: normal; font-size: 22px; width: 100px; white-space: nowrap; border: 1px solid #fff !important; border-top: none !important;">
+                                                <span t-field="o.name">P15484</span>
+                                            </td>
+                                        </tr>
+                                        <tr style="border: none !important;">
+                                            <td style="text-align: right; font-weight: bold; font-size: 18px; padding-right: 60px; padding-top: 5px; border: 1px solid #fff !important; border-top: none !important;">
+                                                ORDER DATE
+                                            </td>
+                                            <td style="text-align: right; font-size: 18px; padding-top: 5px; font-weight: normal; border: 1px solid #fff !important; border-top: none !important;">
+                                                <span t-field="o.date_order" t-options='{"widget":"date"}'>05/02/2026
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr style="border: none !important;">
+                                            <td style="text-align: right; font-weight: bold; font-size: 18px; padding-right: 60px; padding-top: 5px; border: 1px solid #fff !important; border-top: none !important;">
+                                                DELIVERY DATE
+                                            </td>
+                                            <td style="text-align: right; font-size: 18px; padding-top: 5px; font-weight: normal; border: 1px solid #fff !important; border-top: none !important;">
+                                                <span t-field="o.date_planned" t-options='{"widget":"date"}'/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <div style="height:50px;"></div>
+                        <!-- ITEM TABLE -->
+                        <div style="margin-top: 20px;">
+                            <table style="width:100%; border-collapse: collapse; font-family: sans-serif;">
+                                <thead>
+                                    <tr style="border: 2px solid black !important;height:60px;">
+                                        <th style="padding: 15px 10px; margin-bottom:15px; width: 35%; text-align: left; border: none !important;font-size: 18px;vertical-align: top;line-height: 1.1;">
+                                            <br/>
+                                            <b>DESCRIPTION</b>
+                                        </th>
+                                        <th style="padding: 15px 10px; margin-bottom:15px; width: 18%; text-align: center; line-height: 1.1; border: none !important;font-size: 18px;vertical-align: top;">
+                                            <br/>
+                                            <b>SUPPLIER REFERENCE</b>
+                                        </th>
+                                        <th style="padding: 15px 10px; margin-bottom:15px; width: 10%; text-align: center; border: none !important;font-size: 18px;vertical-align: top;line-height: 1.1;">
+                                            <br/>
+                                            <b>QTY</b>
+                                        </th>
+                                        <th style="padding: 15px 10px; margin-bottom:15px; width: 17%; text-align: center; border: none !important;font-size: 18px;vertical-align: top;line-height: 1.1;">
+                                            <br/>
+                                            <b>UNIT PRICE</b>
+                                        </th>
+                                        <th style="padding: 15px 10px; margin-bottom:15px; width: 20%; text-align: right; border: none !important;font-size: 18px;vertical-align: top;line-height: 1.1;">
+                                            <br/>
+                                            <b>TOTAL</b>
+                                        </th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+
+                        <div style="height: 15px;"></div>
+
+                        <table style="width:100%; border-collapse: collapse; font-family: sans-serif; font-size: 18px;">
+                            <tbody>
+                                <t t-foreach="o.order_line" t-as="line">
+                                    <t t-set="seller_id"
+                                       t-value="line.product_id.seller_ids.filtered(lambda obj:obj.partner_id.id == o.partner_id.id)[:1]"/>
+                                    <tr style="border: 1px solid #d1d1d1;">
+                                        <td style="padding: 15px 10px; border-right: 1px solid #d1d1d1; width: 35%; vertical-align: top;">
+                                            <span t-field="line.name"/>
+                                        </td>
+                                        <td style="padding: 15px 10px; border-right: 1px solid #d1d1d1; width: 18%; text-align: center; vertical-align: top;">
+                                            <span t-if="seller_id" t-esc="seller_id.product_code"/>
+                                        </td>
+                                        <td style="padding: 15px 10px; border-right: 1px solid #d1d1d1; width: 10%; text-align: center; vertical-align: top;">
+                                            <span t-esc="int(line.product_qty)"/>
+                                        </td>
+                                        <td style="padding: 15px 10px; border-right: 1px solid #d1d1d1; width: 17%; text-align: right; vertical-align: top;">
+                                            <span t-esc="line.price_unit"
+                                                  t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                        <td style="padding: 15px 10px; width: 20%; text-align: right; vertical-align: top;">
+                                            <span t-field="line.price_subtotal"
+                                                  t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                        <!-- TOTALS -->
+                        <div style="float: right; width: 35%; font-family: sans-serif; font-size: 18px; margin-top: 20px;">
+                            <div style="width: 100%; clear: both; margin-bottom: 12px;">
+                                <span style="float: left; text-align: left; ">SUBTOTAL</span>
+                                <span style="float: right; text-align: right;" t-field="o.amount_untaxed"
+                                      widget="monetary"
+                                      options="{'currency_field': 'o.currency_id'}"/>
+                            </div>
+
+                            <div style="height:5px;"></div>
+
+                            <div style="width: 100%; clear: both; margin-bottom: 12px;">
+                                <span style="float: left; text-align: left; ">GST TOTAL</span>
+                                <span style="float: right; text-align: right;" t-field="o.amount_tax"
+                                      widget="monetary"
+                                      options="{'currency_field': 'o.currency_id'}"/>
+                            </div>
+
+                            <div style="height:5px;"></div>
+
+                            <div style="width: 100%; clear: both; font-weight: bold; font-size: 18px; margin-top: 5px;">
+                                <span style="float: left; text-align: left;">AMOUNT DUE</span>
+                                <span style="float: right; text-align: right;" t-field="o.amount_total"
+                                      widget="monetary"
+                                      options="{'currency_field': 'o.currency_id'}"/>
+                            </div>
+                        </div>
+
+                        <div style="clear: both; height: 5px;"></div>
+                        <div style="height:15px;"></div>
+
+                        <div style="border-top: 2px solid black; width: 100%; margin-top: 5px; margin-bottom: 15px;opacity: 0.5;"></div>
+                        <!-- PAYMENT TERMS -->
+                        <div style="margin-top:20px; font-size:18px;">
+                            <strong>Payment Terms</strong>
+                            <br/>
+                            Please ensure you quote the below Purchase Order Number on all Invoices and Progress Claims
+                            for this project. All invoices MUST be sent to: <strong>admin@adaptivejoinery.com.au
+                        </strong> and <strong>purchasing@adaptivejoinery.com.au</strong> as per PO #:
+                            <strong>
+                                <span t-field="o.name"/>
+                            </strong>
+                        </div>
+
+                        <div style="margin-top:10px; font-size:18px;">
+                            <strong>Company Details</strong>
+                            <br/>
+                            <t t-esc="company.name"/>
+                        </div>
+
+                        <!-- PAGE BREAK -->
+                        <p style="page-break-after:always;"></p>
+
+                        <div style="margin-top: 15px;font-size:18px;">
+                            <t t-esc="company.website"/>
+                            <br/>
+                            <t t-esc="company.email"/>
+                            <br/>
+                            <t t-esc="company.phone"/>
+                            <br/>
+                            ABN:
+                            <t t-esc="company.vat"/>
+                        </div>
+
+                        <div style="margin-top: 15px;font-size:18px;">
+                            <strong>Delivery Address</strong>
+                            <br/>
+                            <t t-esc="o.picking_type_id.warehouse_id.partner_id.name"/>
+                            <br/>
+                            <t t-if="o.picking_type_id.warehouse_id.partner_id.street">
+                                <t t-esc="o.picking_type_id.warehouse_id.partner_id.street"/>
+                                <br/>
+                            </t>
+                            <t t-if="o.picking_type_id.warehouse_id.partner_id.street2">
+                                <t t-esc="o.picking_type_id.warehouse_id.partner_id.street2"/>
+                                <br/>
+                            </t>
+                            <t t-esc="o.picking_type_id.warehouse_id.partner_id.city"/>
+                            <t t-esc="o.picking_type_id.warehouse_id.partner_id.state_id.code"/>
+                            <t t-esc="o.picking_type_id.warehouse_id.partner_id.zip"/>
+                        </div>
+
+                        <div style="margin-top: 15px;font-size:18px;">
+                            <strong>Delivery Instructions</strong>
+                            <br/>
+                            <t t-raw="o.delivery_instruction"/>
+                        </div>
+
+                        <div style="margin-top: 15px;font-size:18px;">
+                            <strong>Comments</strong>
+                        </div>
+
+                        <div style="margin-top: 50px; text-align: center;font-size:18px;">
+                            <t t-raw="o.note"/>
+                        </div>
+
+                        <div style="height:35px;"></div>
+
+                        <table style="width: 100%; height: 50px; margin-top: 5px; border: 1px solid black; border-collapse: collapse;font-size:18px;">
+                            <tbody>
+                                <tr style="vertical-align: top;">
+                                    <td style="padding: 5px; width: 30%;border:0;">
+                                        <strong>Contact</strong>
+                                        <br/>
+                                        <t t-esc="o.user_id.name"/>
+                                    </td>
+                                    <td style="padding: 5px; width: 30%;border:0;">
+                                        <strong>Contact Mobile</strong>
+                                        <br/>
+                                        <t t-esc="o.user_id.phone"/>
+                                    </td>
+                                    <td style="padding: 5px; width: 40%; word-break: break-all;border:0;">
+                                        <strong>Contact Email</strong>
+                                        <br/>
+                                        <t t-esc="o.user_id.email"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <t t-call="purchase_report.static_po_footer"/>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_question_base,access_question_base,model_question_base,base.group_user,1,0,0,0
+access_location_qus,access_location_qus,model_location_qus,base.group_user,1,1,1,1
+access_size_qus,access_size_qus,model_size_qus,base.group_user,1,1,1,1
+access_complexity_qus,access_complexity_qus,model_complexity_qus,base.group_user,1,1,1,1
+access_builder_qus,access_builder_qus,model_builder_qus,base.group_user,1,1,1,1
+access_type_qus,access_type_qus,model_type_qus,base.group_user,1,1,1,1
+access_likelihood_qus,access_likelihood_qus,model_likelihood_qus,base.group_user,1,1,1,1

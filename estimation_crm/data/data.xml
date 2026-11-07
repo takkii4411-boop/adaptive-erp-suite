@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="question_base_location" model="question.base">
+        <field name="name">Location</field>
+        <field name="model">location.qus</field>
+    </record>
+
+    <record id="question_base_size" model="question.base">
+        <field name="name">Size</field>
+        <field name="model">size.qus</field>
+    </record>
+
+    <record id="question_base_complexity" model="question.base">
+        <field name="name">Complexity</field>
+        <field name="model">complexity.qus</field>
+    </record>
+
+    <record id="question_base_builder" model="question.base">
+        <field name="name">Builder</field>
+        <field name="model">builder.qus</field>
+    </record>
+
+    <record id="question_base_type" model="question.base">
+        <field name="name">Type</field>
+        <field name="model">type.qus</field>
+    </record>
+
+    <record id="question_base_likelihood" model="question.base">
+        <field name="name">Likelihood</field>
+        <field name="model">likelihood.qus</field>
+    </record>
+</odoo>

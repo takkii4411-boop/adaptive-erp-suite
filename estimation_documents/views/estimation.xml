@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="estimation_crm_lead_view_form" model="ir.ui.view">
+        <field name="name">sale.estimation.view.form.lead.inherit</field>
+        <field name="model">sale.estimation</field>
+        <field name="inherit_id" ref="sales_customization.view_sale_estimation_type_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='not_display_details']/field[@name='estimation_line_ids']/list/field[@name='drawing_number']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//group[@name='display_details']/field[@name='estimation_line_ids']/list/field[@name='drawing_number']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//group[@name='not_display_details']/field[@name='estimation_line_ids']/list/field[@name='drawing_number']" position="after">
+                <field name="drawing_nos_limited" string="Arch Drawings No" readonly="1" widget="many2many_tags" options="{'no_create': True, 'no_create_edit': True}"/>
+                <button name="action_edit_drawing_nos" type="object" icon="fa-edit" class="oe_edit_only"/>
+            </xpath>
+            <xpath expr="//group[@name='display_details']/field[@name='estimation_line_ids']/list/field[@name='drawing_number']" position="after">
+                <field name="drawing_nos_limited" string="Arch Drawings No" readonly="1" widget="many2many_tags" options="{'no_create': True, 'no_create_edit': True}"/>
+                <button name="action_edit_drawing_nos" type="object" icon="fa-edit" class="oe_edit_only"/>
+            </xpath>
+            <div name="button_box" position="inside">
+                <button name="action_open_project_documents"
+                    type="object"
+                    string="Documents"
+                    icon="fa-folder-open"
+                    class="oe_stat_button"
+                    invisible="not project_id">
+                    <div class="o_stat_info">
+                       <div class="o_row">
+                           <span class="o_stat_text">Documents</span>
+                       </div>
+                   </div>
+                </button>
+            </div>
+        </field>
+    </record>
+
+    <record id="view_sale_estimation_line_drawing_wizard_form" model="ir.ui.view">
+        <field name="name">sale.estimation.line.drawing.wizard.form</field>
+        <field name="model">sale.estimation.line.drawing.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Select Architectural Drawings" js_class="wizard_form">
+                <group>
+                    <field name="line_id" invisible="1"/>
+                    <field name="drawing_nos"
+                           domain="drawing_nos_domain"
+                           options="{'no_create': True, 'no_create_edit': True}"
+                           context="{'list_view_ref': 'estimation_documents.view_documents_document_list_inherit'}"/>
+                </group>
+                <footer>
+                    <button name="action_apply" type="object" string="Apply" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" confirm="Are you sure to discard the changes?"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

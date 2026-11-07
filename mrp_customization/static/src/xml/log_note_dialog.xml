@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="mrp_customization.LogNoteDialog">
+        <Dialog title="'Log Note'" size="'md'">
+            <div class="p-3">
+                <div t-raw="props.note"/>
+            </div>
+
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="props.close">
+                    Close
+                </button>
+            </t>
+        </Dialog>
+    </t>
+
+</templates>

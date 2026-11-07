@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="estimation_sale_order_view_form" model="ir.ui.view">
+        <field name="name">sale.estimation.view.form.sale.order.inherit</field>
+        <field name="model">sale.estimation</field>
+        <field name="inherit_id" ref="sales_customization.view_sale_estimation_type_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button string="Create Sales Order" name="action_create_sale_order" type="object" class="btn btn-primary" data-hotkey="g"
+                invisible="status != 'done' or sale_id"/>
+                <button string="Create Sales Order" name="action_create_sale_order" type="object" class="btn btn-secondary" data-hotkey="g"
+                invisible="status != 'done' or not sale_id"/>
+            </xpath>
+            <div name="button_box" position="inside">
+                <button
+                    name="action_open_sale_order"
+                    type="object"
+                    string="Sale Orders"
+                    class="oe_stat_button"
+                    icon="fa-pencil-square-o"
+                    invisible="not sale_id">
+                    <field name="sale_order_count" widget="statinfo"/>
+                </button>
+            </div>
+        </field>
+    </record>
+</odoo>

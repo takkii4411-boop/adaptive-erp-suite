@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="estimation_crm_lead_view_form" model="ir.ui.view">
+        <field name="name">sale.estimation.view.form.lead.inherit</field>
+        <field name="model">sale.estimation</field>
+        <field name="inherit_id" ref="sales_customization.view_sale_estimation_type_form"/>
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button
+                        name="action_open_opportunity"
+                        type="object"
+                        string="Opportunity"
+                        class="oe_stat_button"
+                        icon="fa-briefcase"
+                        invisible="not lead_id">
+                    <field name="opportunity_count" widget="statinfo"/>
+                </button>
+            </div>
+        </field>
+    </record>
+</odoo>

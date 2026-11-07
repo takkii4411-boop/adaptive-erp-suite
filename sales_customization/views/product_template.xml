@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="product_template_view_kanban_catalog_inherit_custom" model="ir.ui.view">
+        <field name="name">product.template.form.inherit.custom</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='supplier_taxes_id']" position="before">
+                <field name="joinery_type" options="{'horizontal': true}" widget="radio"/>
+            </xpath>
+            <xpath expr="//page[@name='general_information']" position="before">
+                <xpath expr="//page[@name='purchase']" position="move"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="stock.product_template_action_product" model="ir.actions.act_window">
+            <field name="view_mode">list,form,kanban</field>
+    </record>
+    <record id="view_stock_product_template_tree_inherited" model="ir.ui.view">
+        <field name="name">product.template.stock.list.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_tree_view"/>
+        <field name="arch" type="xml">
+            <field name="default_code" position="after">
+                <field name="supplier_name" optional="show"/>
+                <field name="supplier_price" optional="show"/>
+            </field>
+        </field>
+    </record>
+</odoo>

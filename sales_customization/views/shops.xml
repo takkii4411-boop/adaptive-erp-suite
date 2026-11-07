@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_sale_estimation_shop_tree" model="ir.ui.view">
+        <field name="name">sale.estimation.shop.tree</field>
+        <field name="model">sale.estimation.shop</field>
+        <field name="arch" type="xml">
+            <list string="Shops" editable="bottom">
+                <field name="product_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_sale_estimation_shop_form" model="ir.ui.view">
+        <field name="name">sale.estimation.shop.form</field>
+        <field name="model">sale.estimation.shop</field>
+        <field name="arch" type="xml">
+            <form string="Shops">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. Residential, Commercial..."/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="product_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_sale_estimation_shop" model="ir.actions.act_window">
+        <field name="name">Shops</field>
+        <field name="res_model">sale.estimation.shop</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new project type.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_sale_estimation_shop"
+              name="Shops"
+              parent="sales_customization.menu_sale_estimation_config"
+              action="action_sale_estimation_shop"
+              sequence="3"/>
+
+</odoo>

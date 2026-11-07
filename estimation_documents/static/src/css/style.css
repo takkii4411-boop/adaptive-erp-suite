@@ -1,0 +1,11 @@
+#shop_drawing_nos_div label{
+    font-size:9px !important;
+    width: 250px;
+}
+button[name="action_preview_drawing_nos"] {
+    font-size: 0.875rem!important;
+    color: black!important;
+}
+div[name="drawing_nos"] td.o_list_button div{
+    justify-content: end!important;
+}

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_bom_wizard_form_inherit_multiselect" model="ir.ui.view">
+        <field name="name">bom.wizard.form.inherit.multiselect</field>
+        <field name="model">bom.wizard</field>
+        <field name="inherit_id" ref="sales_customization.view_bom_wizard_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='component_ids']/list" position="inside">
+                <control>
+                        <button name="action_add_component_from_catalog" string="Add Components" type="object" class="btn-link" context="{'order_id': parent.id}"/>
+                </control>
+            </xpath>
+        </field>
+    </record>
+</odoo>

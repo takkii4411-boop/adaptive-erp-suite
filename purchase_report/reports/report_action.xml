@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="purchase.action_report_purchase_order" model="ir.actions.report">
+        <field name="report_name">purchase_report.report_purchaseorder_document</field>
+        <field name="report_file">purchase_report.report_purchaseorder_document</field>
+        <field name="paperformat_id" ref="purchase_report.paperformat_static_po"/>
+    </record>
+</odoo>

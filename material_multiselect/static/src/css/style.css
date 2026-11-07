@@ -1,0 +1,30 @@
+button[name="action_open_material_multiselect_wizard"] {
+    margin-left: 5px;
+}
+.material_line_class td[name="product_id"],
+.material_line_class th[data-name="product_id"] {
+    max-width: 850px!important;
+    width: 850px!important;
+}
+.material_line_class th[data-name="product_uom"],
+.material_line_class th[data-name="code"] {
+    width: 80px!important;
+}
+button[name="action_add_material_from_catalog"] {
+    font-size: 0.8125rem!important;
+}
+
+button[name="action_materials_open"] {
+    text-align:end!important;
+}
+.o_add_material_floating_btn {
+    position: fixed !important;
+    top: 475px !important;
+    left: 45px !important;
+    z-index: 12 !important;
+    font-weight: 500 !important;
+    transform: translateX(-50%) !important;
+}
+button[name="action_add_component_from_catalog"] {
+    font-size: 0.8125rem!important;
+}

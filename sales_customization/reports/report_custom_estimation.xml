@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="custom_paper_format" model="report.paperformat">
+            <field name="name">Estimation</field>
+            <field name="format">A4</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">52</field>
+            <field name="margin_bottom">12</field>
+            <field name="margin_left">0</field>
+            <field name="margin_right">0</field>
+            <field name="header_line" eval="False"/>
+            <field name="css_margins" eval="True"/>
+            <field name="dpi">90</field>
+        </record>
+
+        <template id="report_custom_estimation_template">
+            <t t-call="web.basic_layout">
+                <style>
+                    .table th, .table td {
+                    padding: 6px;
+                    }
+                    .amount_values {
+                    text-align:right
+                    }
+                    .h_name {
+                    text-align:left
+                    }
+                    .table thead th {
+                    padding: 6px 6px !important;
+                    background-color: #BABABA !important;
+                    font-weight: bold;
+                    }
+
+                </style>
+                <div class="header" style="font-family: Calibri, sans-serif; font-size: 14px;">
+                    <div class="row">
+                        <div class="col-8" style="text-align: left; vertical-align: top;">
+                            <img t-if="doc.company_id.logo" t-att-src="image_data_uri(doc.company_id.logo)"
+                                 style="max-height: 70px; width: auto; object-fit: contain;"/>
+                        </div>
+                        <div id="company_address" class="col-6" style="text-align: start; vertical-align: top;">
+                            <span style="color:green;">A:</span>
+                            <span t-esc="doc.company_id.street"/>,
+                            <t t-if="doc.company_id.street2">
+                                <span t-esc="doc.company_id.street2"/>,
+                            </t>
+                            <br/>
+                            <t t-if="doc.company_id.city">
+                                <span t-esc="doc.company_id.city"/>,
+                            </t>
+                            <span t-esc="doc.company_id.state_id.name"/>,
+                            <!--                        <t t-if="doc.company_id.country_id.name">-->
+                            <!--                            <span t-esc="doc.company_id.country_id.name"/>-->
+                            <!--                        </t>-->
+                            <t t-if="doc.company_id.zip">
+                                <span t-esc="doc.company_id.zip"/>
+                            </t>
+                            <br/>
+                            <span t-if="doc.company_id.phone">
+                                <span style="color:green;">P:</span>
+                                <span t-esc="doc.company_id.phone"/>
+                                <br/>
+                            </span>
+                            <!--                        <span t-if="doc.company_id.mobile">-->
+                            <!--                            <span style="color:green;">M:</span>-->
+                            <!--                            <span t-esc="doc.company_id.mobile"/>-->
+                            <!--                            <br/>-->
+                            <!--                        </span>-->
+                            <span t-if="doc.company_id.email">
+                                <span style="color:green;">E:</span>
+                                <span t-esc="doc.company_id.email"/>
+                                <br/>
+                            </span>
+                            <t t-set="company_partner" t-value="doc.company_id.partner_id"/>
+                            <t t-set="children"
+                               t-value="company_partner.child_ids.filtered(lambda x: x.type == 'other')"/>
+
+                            <t f-if="children">
+                                <t t-foreach="children" t-as="child">
+                                    <div class="mt-1">
+                                        <span style="color:green;">A:</span>
+                                        <span t-esc="child.street or ''"/>,
+                                        <br/>
+                                        <t t-if="child.street2">
+                                            <span t-esc="child.street2"/>,
+                                        </t>
+                                        <t t-if="child.city">
+                                            <span t-esc="child.city"/>,
+                                        </t>
+                                        <t t-if="child.state_id">
+                                            <span t-esc="child.state_id.name or ''"/>,
+                                        </t>
+                                        <t t-if="child.zip">
+                                            <span t-esc="child.zip"/>
+                                        </t>
+                                        <t t-if="child.phone">
+                                            <br/>
+                                            <span style="color:green;">P:</span>
+                                            <span t-esc="child.phone"/>
+                                            <br/>
+                                        </t>
+                                        <t t-if="child.email">
+                                            <span style="color:green;">E:</span>
+                                            <span t-esc="child.email"/>
+                                            <br/>
+                                        </t>
+                                    </div>
+                                </t>
+                            </t>
+                        </div>
+                    </div>
+                    <br/>
+                     <script>
+                         if (window.location.search) {
+                             var params = {};
+                             window.location.search.substr(1).split("&amp;").forEach(function (item) {
+                                 var s = item.split("=");
+                                 params[s[0]] = decodeURIComponent(s[1]);
+                             });
+                             if (params['page'] != 1) {
+                                 var addressDiv = document.getElementById("company_address");
+                                 addressDiv.style.display = 'none';
+                             }
+                         }
+                     </script>
+                </div>
+                <t t-set="margin_top"
+                            t-value="'margin-top:120px;' if len(children) > 1 else ('margin-top:60px;' if len(children) == 1 else '')"/>
+                <div class="custom-page"
+                     style="font-family: Calibri, sans-serif;font-size:15px; margin-top: 50px;">
+                    <div class="row"/>
+                    <div class="row">
+                        <div class="col-6" style="text-align:start;">
+                            <b>Project:</b>
+                            <span t-if="doc.project_id" t-esc="doc.project_id.name"/>
+                            <br/>
+                            <b>Estimate ID:</b>
+                            <span t-if="doc.name" t-esc="doc.name"/>
+                            <br/>
+                            <br/>
+                            <b>Client:</b>
+                            <t t-if="doc.env.context.get('builder_id')">
+                                <t t-set="builder"
+                                   t-value="doc.builder_ids.filtered(lambda b: b.id == doc.env.context.get('builder_id'))"/>
+                                <span t-if="builder and builder.partner_id" t-esc="builder.partner_id.name"/>
+                            </t>
+                            <t t-else="">
+                                <t t-set="builders" t-value="doc.builder_ids.filtered(lambda b: b.is_client)"/>
+                                <span t-if="builders" t-esc="builders[0 ].partner_id.name"/>
+                            </t>
+                        </div>
+                        <div class="col-6 text-end" t-att-style="margin_top">
+                            <b>Date:</b>
+                            <span t-esc="doc.create_date.strftime('%d/%m/%Y')"/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <b>Estimator:</b>
+                            <b>
+                                <span t-if="doc.employee_id" t-esc="doc.employee_id.name"/>
+                                <br/>
+                            </b>
+                            <span t-if="doc.employee_id" t-esc="doc.employee_id.work_email"/>
+                        </div>
+                    </div>
+                    <br/>
+                    <br/>
+                    <div class="row">
+                        <div class="col-12" style="text-align:start;">
+                            <p>
+                                We are pleased to submit our quotation for the supply and installation of joinery works
+                                for
+                                the referenced
+                                <br/>
+                                project, in accordance with the provided drawings and specifications at the time of this
+                                quotation.
+                            </p>
+                        </div>
+                    </div>
+                    <br/>
+                    <!-- Line Items -->
+                    <b>Scope of Works:</b>
+                    <table class="table table-sm table-borderless" style="border-collapse: collapse;">
+                        <thead>
+                            <tr style="font-size:13px;background-color:#BABABA;white-space: nowrap;">
+                                <th class="h_level" style="padding-left:0;">
+                                    <strong>Level</strong>
+                                </th>
+                                <th class="h_no" style="padding-left:0;">
+                                    <strong>Joinery No</strong>
+                                </th>
+                                <th class="h_name" style="text-align:start;">
+                                    <strong>Joinery Name</strong>
+                                </th>
+                                <th class="h_name" style="width:40%;text-align:start;">
+                                    <strong>Joinery Description</strong>
+                                </th>
+                                <th class="amount_values" style="text-align:start;">
+                                    <strong>Room</strong>
+                                </th>
+                                <th class="amount_values" style="text-align:start;">
+                                    <strong>Stage</strong>
+                                </th>
+                                <th style="text-align:start;">
+                                    <strong>Qty</strong>
+                                </th>
+                                <th class="amount_values" style="text-align:end;padding-right:0;">
+                                    <strong>Unit Price</strong>
+                                </th>
+                                <th class="amount_values" style="text-align:end;padding-right:0;">
+                                    <strong>Total</strong>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="active_lines"
+                               t-value="doc.estimation_line_ids.filtered(lambda l: not l.is_not_active)"/>
+                            <t t-set="lines" t-value="active_lines.sorted(lambda l: l.level_id)"/>
+                            <t t-set="current_level" t-value="False"/>
+
+                            <t t-foreach="lines" t-as="line">
+                                <t t-set="is_existing_line" t-value="line.is_existing_line and line.parent_id"/>
+                                <t t-if="line.level_id.name != current_level">
+                                    <t t-set="level_lines"
+                                       t-value="lines.filtered(lambda x: x.level_id.name == line.level_id.name)"/>
+                                    <t t-set="level_total" t-value="sum(level_lines.mapped('price_subtotal'))"/>
+
+                                    <tr style="border-bottom: 1px solid #C3C5C9;">
+                                        <td colspan="9" style="font-weight:bold;">
+                                            <span style="text-transform: uppercase;">
+                                                <t t-esc="line.level_id.name"/>
+                                            </span>
+                                            <span style="float:right; font-weight:bold;">
+                                                <span t-esc="level_total"
+                                                      t-options='{"widget": "monetary", "display_currency": doc.currency_id}'/>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <t t-set="current_level" t-value="line.level_id.name"/>
+                                </t>
+                                <tr t-att-style="'border-bottom: 1px solid #C3C5C9; background-color: #dceef0 !important;' if is_existing_line else 'border-bottom: 1px solid #C3C5C9;'">
+                                    <td>
+                                        <span t-esc="line.level_id.name"/>
+                                        <br/>
+                                    </td>
+                                    <td class="amount_values" style="text-align:start;">
+                                        <span t-esc="line.product_id.name"/>
+                                    </td>
+                                    <td class="amount_values" style="text-align:start;">
+                                        <span t-esc="line.joinery_name_id.name"/>
+                                    </td>
+                                    <td class="amount_values" style="text-align:start;">
+                                        <span>
+                                            <t t-esc="line.description"/>
+                                        </span>
+                                        <br/>
+                                        <span name="drawing_nos" t-if="line.drawing_nos" class="text-muted">Drawing No:
+                                            <t t-esc="','.join([a.name for a in line.drawing_nos])"/>
+                                        </span>
+                                    </td>
+                                    <td class="amount_values" style="text-align:start;">
+                                        <span t-esc="line.room"/>
+                                    </td>
+                                    <td class="amount_values" style="text-align:start;">
+                                        <span t-esc="line.stage"/>
+                                    </td>
+                                    <td class="amount_values" style="text-align:start;">
+                                        <span t-esc="int(line.qty)"/>
+                                    </td>
+                                    <td class="amount_values" style="text-align:end;">
+                                        <span t-field="line.price_unit"
+                                              t-options='{"widget": "monetary", "display_currency": currency_id}'/>
+                                    </td>
+                                    <td class="amount_values" style="text-align:end;">
+                                        <span t-field="line.price_subtotal"
+                                              t-options='{"widget": "monetary", "display_currency": currency_id}'/>
+                                    </td>
+                                </tr>
+                            </t>
+
+                            <tr class="amount_values">
+                                <td colspan="4" class="border-bottom-0"/>
+                                <td colspan="4" class="border-bottom-0" style="font-weight:bold;">SUB TOTAL</td>
+                                <td class="border-bottom-0" style="padding-right:0">
+                                    <span t-field="doc.amount_untaxed"
+                                          t-options='{"widget": "monetary", "display_currency": currency_id}'/>
+                                </td>
+                            </tr>
+                            <tr class="amount_values">
+                                <td colspan="4" class="border-bottom-0"/>
+                                <td colspan="4" style="border-bottom: 1px solid;font-weight:bold;">GST TOTAL</td>
+                                <td style="border-bottom: 1px solid;padding-right:0">
+                                    <span t-field="doc.amount_tax"
+                                          t-options='{"widget": "monetary", "display_currency": currency_id}'/>
+                                </td>
+                            </tr>
+                            <tr class="amount_values">
+                                <td colspan="4" class="border-bottom-0"/>
+                                <td colspan="4" class="border-bottom-0" style="font-weight:bold;">Total</td>
+                                <td class="border-bottom-0" style="padding-right:0">
+                                    <span t-field="doc.amount_total"
+                                          t-options='{"widget": "monetary", "display_currency": currency_id}'/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <div class="pagebreak" style="page-break-before: always;"/>
+                    <t t-set="exclusions" t-value="request.env.user.remove_html_tags(doc.exclusions)"/>
+                    <t t-if="exclusions != ''">
+                        <div class="row page-2">
+                            <div class="col-12">
+                                <div>
+                                    <table class="table table-sm table-borderless"
+                                           style="width:100%;margin-bottom:10px;">
+                                        <tr style="background-color:#BABABA;">
+                                            <th style="padding:10px;text-align:start;">Standard Exclusions:</th>
+                                        </tr>
+                                    </table>
+                                    <span t-raw="doc.exclusions"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                    <div class="pagebreak" style="page-break-before: always;"/>
+                    <t t-set="custom_exclusions" t-value="request.env.user.remove_html_tags(doc.custom_exclusions)"/>
+                    <t t-if="custom_exclusions != ''">
+                        <div class="row page-2">
+                            <div class="col-12">
+                                <div>
+                                    <table class="table table-sm table-borderless"
+                                           style="width:100%;margin-bottom:10px;">
+                                        <tr style="background-color:#BABABA;">
+                                            <th style="padding:10px;text-align:start;">Custom Exclusions:</th>
+                                        </tr>
+                                    </table>
+                                    <span t-raw="doc.custom_exclusions"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                    <div class="pagebreak" style="page-break-before: always;"/>
+                    <t t-set="standard_notes" t-value="request.env.user.remove_html_tags(doc.standard_notes)"/>
+                    <t t-if="standard_notes != ''">
+                        <div class="row page-4" if="doc.standard_notes">
+                            <div class="col-12">
+                                <div>
+                                    <table class="table table-sm table-borderless"
+                                           style="width:100%;margin-bottom:10px;">
+                                        <tr style="background-color:#BABABA;">
+                                            <th style="padding:10px;text-align:start;">Project-Specific Notes:</th>
+                                        </tr>
+                                    </table>
+                                    <span t-raw="doc.standard_notes"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                    <div class="pagebreak" style="page-break-before: always;"/>
+                    <t t-set="terms_condition"
+                       t-value="request.env.user.remove_html_tags(doc.terms_condition)"/>
+                    <t t-if="terms_condition != ''">
+                        <div class="row page-3" if="doc.terms_condition">
+                            <div class="col-12">
+                                <div>
+                                    <table class="table table-sm table-borderless"
+                                           style="width:100%;margin-bottom:10px;">
+                                        <tr style="background-color:#BABABA;">
+                                            <th style="padding:10px;text-align:start;">Terms &amp; Conditions:</th>
+                                        </tr>
+                                    </table>
+                                    <span t-raw="doc.terms_condition"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+                <div class="footer"
+                     style="border-top: 1px solid lightgrey; display: flex; justify-content: space-between; align-items: center;">
+                    <p>
+                        <span class="text-muted" style="font-family: Calibri, sans-serif; margin-top: 10px;">
+                            Adaptive Joinery ABN: 52 668 625 947
+                        </span>
+                        <span class="text-muted" t-if="report_type == 'pdf'" style="white-space: nowrap;float:right;">
+                            <span>Page
+                                <span class="page"/>
+                            </span>
+                        </span>
+                    </p>
+                </div>
+            </t>
+        </template>
+
+        <template id="report_custom_estimation">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="sales_customization.report_custom_estimation_template"/>
+                </t>
+            </t>
+        </template>
+
+        <record id="action_report_custom_estimation" model="ir.actions.report">
+            <field name="name">Estimation</field>
+            <field name="model">sale.estimation</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">sales_customization.report_custom_estimation</field>
+            <field name="report_file">sales_customization.report_custom_estimation</field>
+            <field name="print_report_name">(object.project_id.name or '') + '_' + (object.builder_ids.filtered(lambda b: b.is_client)[:1].partner_id.name or '') + '-' + (object.name or '')</field>
+            <field name="binding_model_id" ref="model_sale_estimation"/>
+            <field name="binding_type">report</field>
+            <field name="paperformat_id" ref="sales_customization.custom_paper_format"/>
+        </record>
+    </data>
+</odoo>

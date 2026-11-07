@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <!-- Tree View -->
+    <record id="mrp_import_log_tree_view" model="ir.ui.view">
+        <field name="name">mrp.import.log.tree</field>
+        <field name="model">mrp.import.log</field>
+        <field name="arch" type="xml">
+            <list string="Audit Logs" create="false" edit="false" delete="false"
+                  decoration-success="status == 'success'"
+                  decoration-danger="status == 'fail'">
+                <field name="name"/>
+                <field name="create_date"/>
+                <field name="create_uid"/>
+                <field name="file_name"/>
+                <field name="mo_count"/>
+                <field name="status" widget="badge"
+                       decoration-success="status == 'success'"
+                       decoration-danger="status == 'fail'"/>
+                <field name="message" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="mrp_import_log_form_view" model="ir.ui.view">
+        <field name="name">mrp.import.log.form</field>
+        <field name="model">mrp.import.log</field>
+        <field name="arch" type="xml">
+            <form string="Audit Log" create="false" edit="false" delete="false">
+                <header>
+                    <field name="status" widget="statusbar" statusbar_visible="success,fail"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="file_name"/>
+                            <field name="mo_count"/>
+                        </group>
+                        <group>
+                            <field name="create_uid"/>
+                            <field name="create_date"/>
+                        </group>
+                    </group>
+                    <group string="Message">
+                        <field name="message" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="mrp_import_log_search_view" model="ir.ui.view">
+        <field name="name">mrp.import.log.search</field>
+        <field name="model">mrp.import.log</field>
+        <field name="arch" type="xml">
+            <search string="Audit Logs">
+                <field name="name"/>
+                <field name="file_name"/>
+                <field name="create_uid"/>
+                <filter string="Success" name="filter_success" domain="[('status', '=', 'success')]"/>
+                <filter string="Failed" name="filter_fail" domain="[('status', '=', 'fail')]"/>
+                <separator/>
+                <filter string="Today" name="filter_today"
+                        domain="[('create_date', '&gt;=', (context_today()).strftime('%%Y-%%m-%%d'))]"/>
+                <group>
+                    <filter string="Status" name="group_status" context="{'group_by': 'status'}"/>
+                    <filter string="User" name="group_user" context="{'group_by': 'create_uid'}"/>
+                    <filter string="Date" name="group_date" context="{'group_by': 'create_date:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="mrp_import_log_action" model="ir.actions.act_window">
+        <field name="name">CSV Import Logs</field>
+        <field name="res_model">mrp.import.log</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="mrp_import_log_search_view"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No import logs yet.
+            </p>
+            <p>
+                Import logs are created automatically when CSV files are imported via the Manufacturing CSV Import Wizard.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Item under Manufacturing -->
+    <menuitem id="menu_mrp_import_log"
+        name="Audit Logs"
+        action="mrp_import_log_action"
+        parent="mrp.menu_mrp_root"
+        sequence="999"/>
+
+</odoo>

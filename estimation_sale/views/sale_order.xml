@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+   <record id="sale_order_view_estimation_form" model="ir.ui.view">
+        <field name="name">sale.order.view.form.estimation.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <field name="payment_term_id" position="after">
+                <field name="project_id"/>
+                <field name="employee_id"/>
+                <field name="project_type_id" invisible="1"/>
+                <field name="joinery_type" invisible="1"/>
+            </field>
+            <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                <button
+                    name="action_open_opportunity"
+                    type="object"
+                    string="Opportunity"
+                    class="oe_stat_button"
+                    icon="fa-briefcase"
+                    invisible="not opportunity_id">
+                    <field name="opportunity_count" widget="statinfo"/>
+                </button>
+                <button
+                    name="action_open_estimation"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-file-text-o"
+                    string="Estimation"
+                    invisible="not estimation_id">
+                    <field name="estimation_count" widget="statinfo"/>
+                </button>
+                <button
+                   name="action_custom_view_project_ids"
+                   type="object"
+                   class="oe_stat_button"
+                   icon="fa-puzzle-piece"
+                   invisible="not (custom_project_count or custom_project_task_count)"
+               >
+                   <div class="o_stat_info">
+                       <div class="o_row">
+                           <span class="o_stat_value order-first">
+                               <field name="custom_project_count"/>
+                           </span>
+                           <span class="o_stat_text">Projects</span>
+                       </div>
+                       <div class="o_row">
+                           <span class="o_stat_value order-first">
+                               <field name="custom_project_task_count"/>
+                           </span>
+                           <span class="o_stat_text">Tasks</span>
+                       </div>
+                   </div>
+               </button>
+                <button
+                    name="action_open_mrp"
+                    type="object"
+                    string="Manufacturing Orders"
+                    class="oe_stat_button"
+                    icon="fa-wrench"
+                    invisible="not custom_mrp_ids">
+                    <field name="mrp_count" widget="statinfo"/>
+                </button>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_template_id']" position="before">
+                <field name="level_id"/>
+                <field name="is_not_active" column_invisible="1"/>
+                <field name="joinery_type" column_invisible="1"/>
+                <field name="source_wizard_id" column_invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_template_id']" position="after">
+                <field name="joinery_no"/>
+                <field name="room"/>
+                <field name="stage"/>
+                <field name="internal_notes"/>
+                <field name="custom_exclusion"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_uom_qty']" position="after">
+                <field name="total_cost"/>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list/field[@name='price_unit']" position="after">
+                <field name="total_margin"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="sale_mrp_view_estimation_form" model="ir.ui.view">
+        <field name="name">sale.mrp.view.form.estimation.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_mrp.sale_order_form_mrp"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_view_mrp_production']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+   </record>
+</odoo>

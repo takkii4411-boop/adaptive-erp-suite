@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="mrp_bom_form_view_inherited" model="ir.ui.view">
+        <field name="name">mrp.bom.form.inherited</field>
+        <field name="model">mrp.bom</field>
+        <field name="inherit_id" ref="mrp.mrp_bom_form_view"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='bom_line_ids']//list" position="inside">
+                <field name="length" optional="hide"/>
+                <field name="width" optional="hide"/>
+                <field name="comment" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

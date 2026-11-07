@@ -1,0 +1,40 @@
+{
+    'name': 'MRP Customization',
+    'summary': 'Manufacturing Customization',
+    "author": "Srinath Pal",
+    "website": "https://www.nexevolve.com",
+    "category": "Manufacturing",
+    "application": True,
+    "installable": True,
+    "auto_install": False,
+    "license": "Other proprietary",
+    'depends': ['base', 'web', 'mrp', 'mrp_workorder', 'web_gantt', 'sales_customization', 'estimation_project', 'sale_mrp'],
+    'data': [
+        'security/ir.model.access.csv',
+        'data/mrp_import_log_seq.xml',
+        'views/mrp_production.xml',
+        'views/mrp_wizard_views.xml',
+        'views/mrp_bom.xml',
+        'views/product.xml',
+        'views/estimation.xml',
+        'views/stock_picking.xml',
+        'views/mrp_import_log_views.xml',
+    ],
+    'assets': {
+        'web.assets_backend': [
+            'mrp_customization/static/src/xml/mrp_display.xml',
+            'mrp_customization/static/src/js/mrp_display.js',
+            'mrp_customization/static/src/js/stock_move.js',
+            'mrp_customization/static/src/xml/log_note_dialog.xml',
+            'mrp_customization/static/src/js/log_note_dialog.js',
+            'mrp_customization/static/src/js/custom_import.js',
+            'mrp_customization/static/src/xml/import_menu.xml',
+            'mrp_customization/static/src/js/mrp_menu_dialog.js',
+            'mrp_customization/static/src/xml/mrp_menu_dialog.xml',
+        ],
+        'web.assets_backend_lazy': [
+            'mrp_customization/static/src/xml/mrp_web_gantt.xml',
+            'mrp_customization/static/src/js/mrp_web_gantt.js',
+        ],
+    }
+}

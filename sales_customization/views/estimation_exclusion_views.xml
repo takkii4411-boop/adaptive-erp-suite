@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_estimation_exclusion_list" model="ir.ui.view">
+        <field name="name">estimation.exclusion.list</field>
+        <field name="model">estimation.exclusion</field>
+        <field name="arch" type="xml">
+            <list string="Exclusions">
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_estimation_exclusion_form" model="ir.ui.view">
+        <field name="name">estimation.exclusion.form</field>
+        <field name="model">estimation.exclusion</field>
+        <field name="arch" type="xml">
+            <form string="Exclusion">
+                <sheet>
+                    <group>
+                        <field name="name" placeholder="e.g. Standard Exclusions"/>
+                        <field name="joinery_type"/>
+                    </group>
+                    <group string="Exclusion Details">
+                        <field name="exclusion" placeholder="Enter exclusion details (HTML supported)"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_estimation_exclusion" model="ir.actions.act_window">
+        <field name="name">Exclusions</field>
+        <field name="res_model">estimation.exclusion</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first exclusion!
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+            id="menu_estimation_exclusion"
+            name="Exclusions"
+            parent="sales_customization.menu_sale_estimation_config"
+            action="action_estimation_exclusion"
+            sequence="20"/>
+
+</odoo>

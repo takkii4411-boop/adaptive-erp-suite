@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="categ_wholesale" model="product.category">
+            <field name="name">Wholesale</field>
+            <field name="packaging_reserve_method">partial</field>
+            <field name="property_cost_method">standard</field>
+            <field name="property_valuation">periodic</field>
+            <field name="is_wholesale_joinery">True</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="product_view_kanban_catalog_inherit_custom" model="ir.ui.view">
+        <field name="name">product.product.form.inherit.custom</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_view_kanban_catalog"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_template_attribute_value_ids']" position="after">
+                <span invisible="not supplier_name">
+                    Supplier: <field name="supplier_name"/>
+                </span>
+            </xpath>
+            <xpath expr="//div[@name='o_kanban_price']" position="attributes">
+                <attribute name="class">d-none</attribute>
+            </xpath>
+
+            <xpath expr="//div[@name='o_kanban_price']" position="after">
+                <div name="o_kanban_price">
+                    <field name="currency_id" invisible="1"/>
+                    <field name="standard_price"
+                           widget="monetary"
+                           options="{'display_currency': 'currency_id'}"
+                           class="fs-4 fw-bold"/>
+                </div>
+            </xpath>
+
+            <xpath expr="//field[@name='image_128']" position="attributes">
+                <attribute name="options">{'size': [120, 120], 'img_class': 'object-fit-contain'}</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="product_product_normal_form_view_inherit_custom" model="ir.ui.view">
+        <field name="name">product.product.form.inherit.custom</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='barcode']" position="after">
+                <field name="joinery_type" options="{'horizontal': true}" widget="radio"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_stock_product_product_tree_inherited" model="ir.ui.view">
+        <field name="name">product.product.stock.list.inherit</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_product_tree_view"/>
+        <field name="arch" type="xml">
+            <field name="lst_price" position="before">
+                <field name="supplier_name" optional="show"/>
+                <field name="supplier_price" optional="show"/>
+            </field>
+        </field>
+    </record>
+</odoo>

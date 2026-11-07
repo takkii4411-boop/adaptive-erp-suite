@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="purchase_order_form_inherited" model="ir.ui.view">
+        <field name="name">purchase.order.form.inherited</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='picking_type_id']" position="after">
+                <xpath expr="//field[@name='project_id']" position="move"/>
+            </xpath>
+            <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                <button
+                   name="action_custom_view_project_ids"
+                   type="object"
+                   class="oe_stat_button"
+                   icon="fa-puzzle-piece"
+                   invisible="not (custom_project_count or custom_project_task_count)"
+               >
+                   <div class="o_stat_info">
+                       <div class="o_row">
+                           <span class="o_stat_value order-first">
+                               <field name="custom_project_count"/>
+                           </span>
+                           <span class="o_stat_text">Projects</span>
+                       </div>
+                       <div class="o_row">
+                           <span class="o_stat_value order-first">
+                               <field name="custom_project_task_count"/>
+                           </span>
+                           <span class="o_stat_text">Tasks</span>
+                       </div>
+                   </div>
+               </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>

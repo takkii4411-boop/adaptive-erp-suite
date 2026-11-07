@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="seq_mrp_import_log" model="ir.sequence">
+        <field name="name">MRP Import Log</field>
+        <field name="code">mrp.import.log</field>
+        <field name="prefix">MIL/</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+</odoo>

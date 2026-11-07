@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="res_users_view_form_preferences_inherited" model="ir.ui.view">
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="hr.res_users_view_form_preferences" />
+        <field name="arch" type="xml">
+            <field name="notification_type" position="after">
+                <field name="sale_chatter_position" options="{'horizontal': true}" widget="radio" />
+            </field>
+        </field>
+    </record>
+</odoo>

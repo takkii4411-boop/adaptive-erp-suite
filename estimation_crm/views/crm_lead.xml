@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="crm_lead_view_estimation_form" model="ir.ui.view">
+        <field name="name">crm.lead.view.form.estimation.inherit</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button string="New Estimation" name="action_create_estimation" type="object" class="btn btn-primary"
+                        data-hotkey="g"
+                        invisible="type == 'lead'"/>
+            </xpath>
+            <field name="tag_ids" position="after">
+                <field name="builder_ids" widget="many2many_tags" invisible="type == 'lead'"/>
+                <field name="opportunity_received_date" invisible="type == 'lead'"/>
+                <field name="create_date" string="Created Date:" invisible="type == 'lead'"/>
+                <field name="proposal_due_date" invisible="type == 'lead'"/>
+                <field name="expected_project_award_date" invisible="type == 'lead'"/>
+                <label for="expected_project_duration" class="d-inline-block" invisible="type == 'lead'"/>
+                <div id="expected_project_duration" class="d-flex" invisible="type == 'lead'">
+                    <field name="expected_project_duration" class="oe_inline o_input_6ch"/>
+                    <span class="opacity-50">Months</span>
+                </div>
+            </field>
+            <group name="opportunity_partner" position="inside">
+                <field name="employee_id"/>
+                <field name="project_id" required="type != 'lead'"/>
+            </group>
+            <group name="lead_priority" position="inside">
+                <field name="remark" readonly="type == 'opportunity'"/>
+            </group>
+            <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                <button
+                        name="action_open_estimation"
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-file-text-o"
+                        string="Estimation"
+                        invisible="not estimation_id or type == 'lead'">
+                    <field name="estimation_count" widget="statinfo"/>
+                </button>
+            </xpath>
+            <field name="expected_revenue" position="after">
+                <field name="estimation_revenue" class="o_input_13ch" widget="monetary"
+                       options="{'currency_field': 'company_currency'}"/>
+            </field>
+            <label for="expected_revenue" position="after">
+                <span style="margin-left:50px;"/>
+                <label for="estimation_revenue" class="oe_edit_only"/>
+            </label>
+            <xpath expr="//notebook" position="inside">
+                <page name="project_criteria" string="Project Criteria">
+                    <group>
+                        <group>
+                            <field name="location_qus_id" readonly="type == 'opportunity'"
+                                   options="{'no_quick_create': True, 'no_create_edit': True, 'no_open': True}"/>
+                            <field name="size_qus_id" readonly="type == 'opportunity'"
+                                   options="{'no_quick_create': True, 'no_create_edit': True, 'no_open': True}"/>
+                            <field name="complexity_qus_id" readonly="type == 'opportunity'"
+                                   options="{'no_quick_create': True, 'no_create_edit': True, 'no_open': True}"/>
+                        </group>
+                        <group>
+                            <field name="builder_qus_id" readonly="type == 'opportunity'"
+                                   options="{'no_quick_create': True, 'no_create_edit': True, 'no_open': True}"/>
+                            <field name="type_qus_id" readonly="type == 'opportunity'"
+                                   options="{'no_quick_create': True, 'no_create_edit': True, 'no_open': True}"/>
+                            <field name="likelihood_qus_id" readonly="type == 'opportunity'"
+                                   options="{'no_quick_create': True, 'no_create_edit': True, 'no_open': True}"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+            <div class="col-auto" position="after">
+                <div class="col-auto">
+                    <label for="project_criteria_per" class="d-inline-block"/>
+                    <div id="project_criteria_per" class="d-flex align-items-baseline">
+                        <field name="project_criteria_per" widget="float" class="oe_inline o_input_6ch"/>
+                        <span class="opacity-50 p-2">%</span>
+                    </div>
+                </div>
+            </div>
+
+            <xpath expr="//field[@name='team_id']" position="after">
+                <field name="lead_type"/>
+            </xpath>
+            <xpath expr="//field[@name='project_id']" position="after">
+                <field name="lead_type"/>
+                <field name="remark" readonly="type == 'opportunity'"/>
+            </xpath>
+            <xpath expr="//field[@name='priority']" position="attributes">
+                <attribute name="class">crm_priority</attribute>
+            </xpath>
+            <xpath expr="//group[@name='lead_priority']/field[@name='priority']" position="attributes">
+                <attribute name="class">crm_priority</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="lead_kanban_view_inherited" model="ir.ui.view">
+        <field name="name">crm.lead.view.kanban.inherited</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_kanban_view_leads"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='priority']" position="attributes">
+                <attribute name="class">crm_priority</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_crm_lead_kanban_inherited" model="ir.ui.view">
+        <field name="name">crm.lead.view.kanban.inherited</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.view_crm_lead_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='priority']" position="attributes">
+                <attribute name="class">crm_priority</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="crm_lead_view_tree_inherited" model="ir.ui.view">
+        <field name="name">crm.lead.view.list.inherited</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_tree_view_oppor"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='priority']" position="attributes">
+                <attribute name="class">crm_priority</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="quick_create_opportunity_form_inherited" model="ir.ui.view">
+        <field name="name">quick.create.opportunity.form.inherited</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.quick_create_opportunity_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='priority']" position="attributes">
+                <attribute name="class">oe_inline mb-0 crm_priority</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

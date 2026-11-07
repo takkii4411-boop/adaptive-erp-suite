@@ -1,0 +1,40 @@
+<odoo>
+
+    <record id="estimation_subtask_template_tree" model="ir.ui.view">
+        <field name="name">estimation.subtask.template.tree</field>
+        <field name="model">estimation.subtask.template</field>
+        <field name="arch" type="xml">
+            <list string="Default Subtasks" editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+    <record id="estimation_subtask_template_form" model="ir.ui.view">
+        <field name="name">estimation.subtask.template.form</field>
+        <field name="model">estimation.subtask.template</field>
+        <field name="arch" type="xml">
+            <form string="Default Subtasks">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="sequence"/>
+                        <field name="active" widget="boolean_toggle"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_estimation_subtask_template" model="ir.actions.act_window">
+        <field name="name">Default Subtasks</field>
+        <field name="res_model">estimation.subtask.template</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <menuitem
+        id="menu_estimation_subtask_template"
+        name="Default Subtasks"
+        parent="project.menu_project_config"
+        action="action_estimation_subtask_template"
+        sequence="11"/>
+</odoo>

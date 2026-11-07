@@ -1,0 +1,5 @@
+.material_hardware_details .o_form_sheet{max-width: 100% !important;}
+div[name="line_ids"] th[data-name="rate"],
+div[name="order_line"] th[data-name="rate"] {
+    width: 80px !important;
+}

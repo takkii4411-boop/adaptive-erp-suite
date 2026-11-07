@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="estimation_documents.TagsList" t-inherit="web.TagsList" t-inherit-mode="extension">
+        <xpath expr="//span" position="attributes">
+            <attribute name="t-att-data-id">tag.resId</attribute>
+            <attribute name="t-on-click">(ev) => tag.onClick and tag.onClick(ev) or onDrawingTagClick(ev, this)</attribute>
+        </xpath>
+    </t>
+</templates>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Search View -->
+    <record id="view_sale_estimation_report_search" model="ir.ui.view">
+        <field name="name">sale.estimation.report.search</field>
+        <field name="model">sale.estimation.report</field>
+        <field name="arch" type="xml">
+            <search string="Search Estimation Reports">
+                <field name="estimation_id" string="Estimation"/>
+                <field name="employee_id" string="Assigned To"/>
+                <field name="level_id" string="Level"/>
+                <field name="product_id" string="Joinery No"/>
+                <field name="joinery_no" string="Joinery Name"/>
+                <field name="component_product_id" string="Component Product"/>
+                <field name="builder_partner_id" string="Builder"/>
+                <field name="subcontractor_partner_id" string="Subcontractor"/>
+
+                <!-- Filters -->
+                <filter name="filter_draft" string="Draft" domain="[('status','=','draft')]"/>
+                <filter name="filter_sent" string="In Review" domain="[('status','=','sent')]"/>
+                <filter name="filter_done" string="Done" domain="[('status','=','done')]"/>
+                <filter name="filter_cancel" string="Cancelled" domain="[('status','=','cancel')]"/>
+                <separator/>
+                <filter name="filter_is_client" string="Is Client" domain="[('is_client','=', True)]"/>
+                <filter name="filter_winner" string="Winner" domain="[('winner','=', True)]"/>
+
+                <!-- Group By section -->
+                <group>
+                    <filter name="group_estimation" string="Estimation" domain="[]" context="{'group_by': 'estimation_id'}"/>
+                    <filter name="group_partner" string="Assigned To" domain="[]" context="{'group_by': 'employee_id'}"/>
+                    <filter name="group_project" string="Project" domain="[]" context="{'group_by': 'project_id'}"/>
+                    <filter name="group_builder" string="Builder" domain="[]" context="{'group_by': 'builder_partner_id'}"/>
+                    <filter name="group_subcontractor" string="Subcontractor" domain="[]" context="{'group_by': 'subcontractor_partner_id'}"/>
+                    <filter name="group_level" string="Level" domain="[]" context="{'group_by': 'level_id'}"/>
+                    <filter name="group_product" string="Joinery No" domain="[]" context="{'group_by': 'product_id'}"/>
+                    <filter name="group_joinery_no" string="Joinery Name" domain="[]" context="{'group_by': 'joinery_no'}"/>
+                    <filter name="group_component_product" string="Materials &amp; Hardware" domain="[]" context="{'group_by': 'component_product_id'}"/>
+                    <filter name="group_status" string="Status" domain="[]" context="{'group_by': 'status'}"/>
+                    <filter name="group_date" string="Date" domain="[]" context="{'group_by': 'date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Reporting Menu -->
+    <menuitem id="menu_sale_estimation_reporting_root"
+              name="Reporting"
+              parent="sales_customization.menu_sale_estimation_type"
+              sequence="90"/>
+
+    <!-- Reporting Action -->
+    <record id="action_sale_estimation_report" model="ir.actions.act_window">
+        <field name="name">Estimation Analysis</field>
+        <field name="res_model">sale.estimation.report</field>
+        <field name="view_mode">graph,pivot,list</field>
+        <field name="search_view_id" ref="view_sale_estimation_report_search"/>
+    </record>
+
+    <menuitem id="menu_sale_estimation_report"
+              name="Estimation Analysis"
+              parent="menu_sale_estimation_reporting_root"
+              action="action_sale_estimation_report"
+              sequence="1"/>
+
+    <!-- Pivot View -->
+    <record id="view_sale_estimation_report_pivot" model="ir.ui.view">
+        <field name="name">sale.estimation.report.pivot</field>
+        <field name="model">sale.estimation.report</field>
+        <field name="arch" type="xml">
+            <pivot string="Estimation Analysis">
+                <!-- First level -->
+                <field name="product_id" type="row"/>
+                <!-- Second level (COMPONENT PRODUCT, not the main product) -->
+                <field name="component_product_id" type="row"/>
+                <field name="status" type="col"/>
+                <field name="total_cost" type="measure"/>
+                <field name="total_margin" type="measure"/>
+                <field name="total_margin_per" type="measure"/>
+                <field name="price_subtotal" type="measure"/>
+                <field name="price_total" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Graph View -->
+    <record id="view_sale_estimation_report_graph" model="ir.ui.view">
+        <field name="name">sale.estimation.report.graph</field>
+        <field name="model">sale.estimation.report</field>
+        <field name="arch" type="xml">
+            <graph string="Estimation Analysis" type="bar">
+                <field name="builder_partner_id" type="row"/>
+                <field name="subcontractor_partner_id"/>
+                <field name="total_cost" type="measure"/>
+                <field name="total_margin" type="measure"/>
+                <field name="total_margin_per" type="measure"/>
+                <field name="price_total" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- List View -->
+    <record id="view_sale_estimation_report_tree" model="ir.ui.view">
+        <field name="name">sale.estimation.report.tree</field>
+        <field name="model">sale.estimation.report</field>
+        <field name="arch" type="xml">
+            <list string="Estimation Analysis">
+                <field name="estimation_id"/>
+                <field name="project_id"/>
+                <field name="employee_id"/>
+                <field name="builder_partner_id"/>
+                <field name="subcontractor_partner_id"/>
+                <field name="level_id"/>
+                <field name="product_id"/>
+                <field name="joinery_no"/>
+                <field name="component_product_id"/>
+                <field name="qty"/>
+                <field name="price_unit"/>
+                <field name="total_cost"/>
+                <field name="total_margin"/>
+                <field name="total_margin_per"/>
+                <field name="price_subtotal"/>
+                <field name="price_total"/>
+                <field name="status" widget="badge"
+                       decoration-info="status == 'draft'"
+                       decoration-warning="status == 'sent'"
+                       decoration-danger="status == 'cancel'"
+                       decoration-success="status == 'done'"/>
+            </list>
+        </field>
+    </record>
+</odoo>

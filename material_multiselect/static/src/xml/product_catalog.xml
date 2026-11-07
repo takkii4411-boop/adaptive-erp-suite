@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-inherit="product.ProductCatalogOrderLine" t-inherit-mode="extension">
+        <xpath expr="//div[@class='text-danger text-truncate my-2 pt-3 border-top']" position="before">
+            <span t-if="this.env and this.env.arch_codes and this.env.orderResModel == 'bom.wizard'">
+                <t t-if="this.env.arch_codes[0][props.productId]">
+                    <span style="margin-left:15px;"/>
+                    Arch Code:
+                    <span t-out="this.env.arch_codes[0][props.productId]"/>
+                </t>
+            </span>
+        </xpath>
+    </t>
+
+</templates>

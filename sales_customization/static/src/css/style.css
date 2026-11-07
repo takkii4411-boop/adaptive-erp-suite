@@ -1,0 +1,239 @@
+/*div[name="estimation_line_ids"] .o_list_table {
+    table-layout: auto!important;
+}*/
+
+div[name="estimation_line_ids"] td[name="product_id"],
+div[name="estimation_line_ids"] td[name="level_id"],
+div[name="estimation_line_ids"] td[name="joinery_no"],
+div[name="estimation_line_ids"] td[name="stage"]{
+    max-width: 100px!important;
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    line-height: 1.4 !important;
+}
+div[name="estimation_line_ids"] .o_list_button {
+    width: 30px!important;
+}
+th[data-name="is_select"] {
+    width: 42px!important;
+}
+th[data-name="is_copied_line"] {
+    width: 0px!important;
+}
+th[data-name="level_id"] {
+    width: 60px!important;
+}
+th[data-name="rate"],
+th[data-name="stage"],
+th[data-name="quantity"],
+th[data-name="uom"],
+th[data-name="margin"],
+th[data-name="margin_diff"],
+th[data-name="room"] {
+    width: 40px!important;
+}
+
+th[data-name="description"],
+th[data-name="joinery_no"] {
+    width: 100px!important;
+}
+
+th[data-name="drawing_number"] {
+    width: 140px!important;
+}
+th[data-name="qty"],
+th[data-name="price_unit"] {
+    width: 60px!important;
+}
+
+th[data-name="total_cost"],
+th[data-name="total_margin"],
+th[data-name="price_total"],
+th[data-name="subtotal"] {
+    width: 70px!important;
+}
+th[data-name="custom_exclusion"],
+th[data-name="internal_notes"] {
+    width: 60px!important;
+}
+th[data-name="arch_code"] {
+    width: 55px!important;
+}
+th[data-name="product_id"] {
+    width: 100px !important;
+}
+th[data-name="sequence"] {
+    width: 110px!important;
+}
+button[name="action_clear_all_component"],
+button[name="action_clear_all"],
+button[name="action_add_lines"],
+button[name="action_create_bom"],
+button[name="action_update_bom"],
+button[name="action_send"],
+button[name="action_confirm"],
+button[name="action_cancel"],
+button[name="action_materials_open"],
+button[name="action_draft"] {
+    font-size: 0.8125rem!important;
+}
+div[name="select_all"] {
+    width: auto!important;
+    margin-top: 11px!important;
+}
+div[name="status"] .o_statusbar_status button{
+    font-size: 0.8125rem!important;
+}
+#estimation_left label{
+    font-size:11px !important;
+    width: 172px;
+}
+.estimation_total_footer label{
+    font-size:11px !important;
+    font-weight: bold !important;
+    opacity:1 !important;
+}
+button[name="action_open_description_popup"] {
+    font-size: x-small!important;
+}
+div[name="filter_level"] {
+    width: 100%!important;
+}
+div[name="filter_joinery_no"] {
+    width: 60%!important;
+}
+div[name="filter_product_id"] {
+    width: 78%!important;
+}
+div[name="filter_description"] {
+    width: 90%!important;
+}
+div[name="filter_room"] {
+    width: 108%!important;
+}
+
+div.select-all-div {
+    padding: 4px 0 8px 0;
+    align-items: center;
+    position: absolute;
+    top: 198px;
+    z-index: 99;
+    /*margin-right: 17px;*/
+    font-weight: 400;
+    font-size: 11px;
+}
+div[name="estimation_line_ids"] thead,
+div[name="estimation_line_ids"] th.o_list_actions_header
+ {
+    background-color: lightgreen!important;
+}
+.sale-estimation-dialog.modal-dialog {
+    max-width: 100% !important;
+    padding: 1rem 0 !important;
+}
+.o_form_view .o_form_sheet_bg {
+    max-width: 100% !important;
+}
+div[name="component_ids"] .o_list_table,
+div[name="subcontractor_ids"] .o_list_table,
+div[name="operation_ids"] .o_list_table {
+    table-layout: auto!important;
+}
+div[name="component_ids"] .o_list_renderer .o_list_table thead .o_list_number_th,
+div[name="subcontractor_ids"] .o_list_renderer .o_list_table thead .o_list_number_th,
+div[name="operation_ids"] .o_list_renderer .o_list_table thead .o_list_number_th {
+    text-align: left!important;
+}
+div[name="component_ids"] .o_list_renderer .o_list_table tbody > tr > td:not(.o_list_record_selector).o_list_number,
+div[name="subcontractor_ids"] .o_list_renderer .o_list_table tbody > tr > td:not(.o_list_record_selector).o_list_number,
+div[name="operation_ids"] .o_list_renderer .o_list_table tbody > tr > td:not(.o_list_record_selector).o_list_number {
+    text-align: left!important;
+}
+td[name="is_not_active"] .form-check-input:checked {
+    background-color: #dc3545!important;
+    border-color: #dc3545!important;
+}
+
+.o_scrollable_list.o_bom_list_300,
+.o_scrollable_list.o_bom_list_200 {
+    display: block !important;
+}
+.o_bom_list_300 { height: 300px !important; max-height: 300px !important; }
+.o_bom_list_200 { height: 200px !important; max-height: 200px !important; }
+
+.o_bom_list_300 .o_list_renderer,
+.o_bom_list_200 .o_list_renderer {
+    height: 100% !important;
+    overflow: auto !important;
+}
+
+.o_bom_list_300 .o_list_table,
+.o_bom_list_200 .o_list_table {
+    table-layout: fixed !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+}
+
+.o_bom_list_300 .o_list_table thead,
+.o_bom_list_200 .o_list_table thead {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 20 !important;
+    background: #90ee90 !important;
+    box-shadow: 0 2px 4px -2px rgba(0,0,0,0.1) !important;
+}
+.o_bom_list_300 .o_list_table thead th,
+.o_bom_list_200 .o_list_table thead th {
+    background: #90ee90 !important;
+    border-bottom: 2px solid #dee2e6 !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 21 !important;
+}
+
+.order_line_list {
+    height: 100vh !important;
+    display: flex !important;
+    flex-direction: column !important;
+    position: relative !important;
+
+}
+
+.order_line_list .o_list_renderer {
+    flex: 1 !important;
+    overflow: auto !important;
+}
+
+.order_line_list .o_list_table thead {
+    position: sticky !important;
+    top: 0 !important;
+
+    z-index: 1080 !important;
+}
+
+.order_line_list .o_list_table thead th{
+   background: #90ee90 !important;
+}
+
+.material_hardware_details .o_list_table thead th{
+   background: #90ee90 !important;
+}
+
+.o_details_hidden{
+    max-width: 120px !important;
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    line-height: 1.4 !important;
+}
+
+div[name="joinery_type"] .o_radio_item:nth-child(2) {
+    display: none;
+}
+
+.o_form_view .oe_avatar .img {
+    width: 150px !important;
+    height: 150px !important;
+}
+.sale-estimation-dialog .o_form_sheet{max-width: 100% !important;}

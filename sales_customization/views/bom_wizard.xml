@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_bom_wizard_form" model="ir.ui.view">
+        <field name="name">bom.wizard.form</field>
+        <field name="model">bom.wizard</field>
+        <field name="arch" type="xml">
+            <form string="BOM Details" js_class="wizard_form" create="false">
+                <header>
+                    <button name="action_go_back"
+                             string="Back"
+                             type="object"
+                             class="btn btn-secondary oe_highlight mb-2"
+                             invisible="context.get('from_product_catalog')"/>
+                </header>
+                <sheet>
+                    <group style="font-size:12px;">
+                        <group class="col-lg-12">
+                            <group class="oe_subtotal_footer d-flex order-0 order-lg-1 estimation_total_footer" invisible="estimation_id and estimation_id.select_all">
+                                <div class="d-flex gap-4 align-items-baseline">
+                                    <!-- Total Margin All -->
+                                    <div class="d-flex align-items-baseline gap-1">
+                                        <label for="total_cost_all" string="Total Cost"/>
+                                        <field name="total_cost_all" widget="monetary"
+                                               options="{'currency_field': 'currency_id'}" readonly="1"/>
+                                    </div>
+                                    <div class="d-flex align-items-baseline gap-1">
+                                        <label for="total_margin_all" string="Total Margin"/>
+                                        <field name="total_margin_all" widget="monetary"
+                                               options="{'currency_field': 'currency_id'}" readonly="1"/>
+                                    </div>
+
+                                    <!-- Total All -->
+                                    <div class="d-flex align-items-baseline gap-1">
+                                        <label for="total_all" string="Total Sell Amount"/>
+                                        <field name="total_all" widget="monetary"
+                                               options="{'currency_field': 'currency_id'}" readonly="1"/>
+                                    </div>
+                                </div>
+                            </group >
+                        </group>
+                        <notebook>
+                            <page string="Materials &amp; Hardware">
+                                <div class="estimation_filter_wrapper" style="display: flex; padding-bottom: 8px; border-bottom: 1px solid #dee2e6; margin-bottom: 0; align-items: center;">
+                                        <!-- Filters label - aligned with checkbox column -->
+                                        <div class="filter-cell" style="flex-shrink: 0; padding: 0 4px; font-weight: bold; display: flex; align-items: center; justify-content: center;">
+                                            Filters:
+                                        </div>
+                                        <!-- Button column spacer -->
+                                        <div class="filter-cell" style="flex-shrink: 0; padding: 0 4px;"></div>
+                                        <!-- Filter for level_id -->
+                                        <div class="filter-cell" style="flex-shrink: 0; padding: 0 4px;">
+                                            <field name="filter_component_product_id" placeholder="Description" nolabel="1" options="{'no_quick_create': True, 'no_create_edit': True, 'no_open': True}" domain="filter_component_product_domain"/>
+                                        </div>
+                                        <!-- Action buttons -->
+                                        <div style="flex: 1; display: flex; gap: 8px; align-items: center;">
+                                            <button type="object" class="btn btn-link btn-sm" name="action_apply">Apply</button>
+                                            <button type="object" class="btn btn-link btn-sm" name="action_clear_all_component">Clear</button>
+                                        </div>
+                                    </div>
+                                <field name="component_ids" readonly="estimation_id and estimation_id.select_all">
+                                    <list editable="bottom" limit="0" class="o_scrollable_list o_bom_list_300">
+                                        <field name="currency_id" column_invisible="1"/>
+                                        <field name="product_categ_id" readonly="parent.estimation_id" column_invisible="1"/>
+                                        <field name="product_id" required="1" readonly="parent.estimation_id" domain="product_domain or []" force_save="1" options="{'no_quick_create': True, 'no_create_edit': True}"/>
+                                        <field name="prod"/>
+                                        <field name="sub"/>
+                                        <field name="arch_code" readonly="1" force_save="1"/>
+                                        <field name="rate" widget='monetary'
+                                                options="{'currency_field': 'currency_id'}"/>/>
+                                        <field name="product_uom_qty"/>
+                                        <field name="product_uom"/>
+                                        <field name="margin" column_invisible="parent.estimation_id"/>
+                                        <field name="margin" string="Initial Margin (%)" column_invisible="not parent.estimation_id"/>
+                                        <field name="margin_diff" readonly="1"/>
+                                        <field name="margin_all" string="Total Margin (%)" column_invisible="not parent.estimation_id"/>
+                                        <field name="price_subtotal" widget='monetary'
+                                               options="{'currency_field': 'currency_id'}" readonly="1"/>
+                                    </list>
+                                </field>
+                                <field name="currency_id" invisible="1"/>
+                                <field name="bom_id" invisible="1"/>
+                                <group>
+                                    <group class="oe_subtotal_footer d-flex order-0 order-lg-1 estimation_total_footer" invisible="estimation_id and estimation_id.select_all"
+                                           style="width: 100%; justify-content: space-between; align-items: center;">
+                                        <div class="d-flex gap-4 align-items-baseline">
+                                            <!-- Total Cost -->
+                                            <div class="d-flex align-items-baseline gap-1">
+                                                <label for="total_cost_component"/>
+                                                <field name="total_cost_component" widget="monetary"
+                                                       options="{'currency_field': 'currency_id'}" readonly="1"/>
+                                            </div>
+
+                                            <!-- Margin -->
+                                            <div class="d-flex align-items-baseline gap-1">
+                                                <label for="total_margin_component"/>
+                                                <field name="total_margin_component" widget="monetary"
+                                                       options="{'currency_field': 'currency_id'}" readonly="1"/>
+                                            </div>
+
+                                            <!-- Margin Percentage -->
+                                            <div class="d-flex align-items-baseline gap-1">
+                                                <field name="is_component_margin_manual" invisible="1"/>
+                                                <label for="margin_percent_component" string="Initial Margin(%)"/>
+                                                <field name="margin_percent_component" readonly="is_component_margin_manual"/>
+                                                <button name="action_reset_component_margins"
+                                                        string="Reset"
+                                                        type="object"
+                                                        class="btn-link"
+                                                        title="Reset all line margins to master margin"
+                                                        invisible="not is_component_margin_manual"/>
+                                            </div>
+
+                                            <!-- Total Margin -->
+                                            <div class="d-flex align-items-baseline gap-1">
+                                                <label for="margin_percent_component_diff" string="Total Margin(%)"/>
+                                                <field name="margin_percent_component_diff" widget="monetary"
+                                                       options="{'currency_field': 'currency_id'}" readonly="1"/>
+                                            </div>
+
+                                            <!-- Total -->
+                                            <div class="d-flex align-items-baseline gap-1">
+                                                <label for="total_component"/>
+                                                <field name="total_component" widget="monetary"
+                                                       options="{'currency_field': 'currency_id'}" readonly="1"/>
+                                            </div>
+                                        </div>
+                                    </group >
+                                    <group class="oe_subtotal_footer d-flex order-0 order-lg-1 estimation_total_footer" invisible="not (estimation_id and estimation_id.select_all)"
+                                           style="width: 100%; justify-content: space-between; align-items: center;">
+                                        <div class="d-flex gap-4 align-items-baseline">
+                                            <!-- Total Cost -->
+                                            <div class="d-flex align-items-baseline gap-1">
+                                                <label for="total_cost_component_all"/>
+                                                <field name="total_cost_component_all" widget="monetary"
+                                                       options="{'currency_field': 'currency_id'}" readonly="1"/>
+                                            </div>
+
+                                            <!-- Margin -->
+                                            <div class="d-flex align-items-baseline gap-1">
+                                                <label for="total_margin_component_all"/>
+                                                <field name="total_margin_component_all" widget="monetary"
+                                                       options="{'currency_field': 'currency_id'}" readonly="1"/>
+                                            </div>
+
+                                            <!-- Margin Percentage -->
+                                            <div class="d-flex align-items-baseline gap-1">
+                                                <label for="margin_percent_component_all" string="Margin (%)"/>
+                                                <field name="margin_percent_component_all" readonly="1"/>
+                                            </div>
+
+                                            <!-- Margin Difference -->
+                                            <div class="d-flex align-items-baseline gap-1">
+                                                <label for="margin_percent_component_diff_all"/>
+                                                <field name="margin_percent_component_diff_all"/>
+                                            </div>
+
+                                            <!-- Total -->
+                                            <div class="d-flex align-items-baseline gap-1">
+                                                <label for="total_component_all"/>
+                                                <field name="total_component_all" widget="monetary"
+                                                       options="{'currency_field': 'currency_id'}" readonly="1"/>
+                                            </div>
+                                        </div>
+                                    </group>
+                                </group>
+                            </page>
+                            <field name="estimation_id" invisible="1"/>
+                            <page name="drawings" string="Drawings" invisible="estimation_id and estimation_id.select_all">
+                                <field name="drawings_html"/>
+                            </page>
+                        </notebook>
+                    </group>
+                    <group style="font-size: 12px;">
+                        <group style="width:55%; border-right: 1px solid #E6E6E6;">
+                            <notebook>
+                                <page string="Sub-Contractors">
+                                    <div class="estimation_filter_wrapper" style="display: flex; padding-bottom: 8px; border-bottom: 1px solid #dee2e6; margin-bottom: 0; align-items: center;">
+                                        <!-- Filters label - aligned with checkbox column -->
+                                        <div class="filter-cell" style="flex-shrink: 0; padding: 0 4px; font-weight: bold; display: flex; align-items: center; justify-content: center;">
+                                            Filters:
+                                        </div>
+                                        <!-- Button column spacer -->
+                                        <div class="filter-cell" style="flex-shrink: 0; padding: 0 4px;"></div>
+                                        <!-- Filter for level_id -->
+                                        <div class="filter-cell" style="flex-shrink: 0; padding: 0 4px;">
+                                            <field name="filter_product_id" placeholder="Description" nolabel="1" options="{'no_quick_create': True, 'no_create_edit': True, 'no_open': True}" domain="filter_product_domain"/>
+                                        </div>
+                                        <!-- Filter for product_id -->
+                                        <div class="filter-cell" style="flex-shrink: 0; padding: 0 4px;">
+                                            <field name="filter_subcontractor_id" placeholder="Sub-Contractor" nolabel="1" options="{'no_quick_create': True, 'no_create_edit': True, 'no_open': True}" domain="filter_subcontractor_domain"/>
+                                        </div>
+                                        <!-- Action buttons -->
+                                        <div style="flex: 1; display: flex; gap: 8px; align-items: center;">
+                                            <button type="object" class="btn btn-link btn-sm" name="action_apply">Apply</button>
+                                            <button type="object" class="btn btn-link btn-sm" name="action_clear_all">Clear</button>
+                                        </div>
+                                    </div>
+                                    <field name="subcontractor_ids" readonly="estimation_id and estimation_id.select_all">
+                                        <list editable="bottom" limit="0" class="o_scrollable_list o_bom_list_200">
+                                            <field name="currency_id" column_invisible="1"/>
+                                            <field name="product_id" required="1" readonly="parent.estimation_id" domain="product_domain" options="{'no_quick_create': True, 'no_create_edit': True}"/>
+                                            <field name="subcontractor" domain="subcontractor_domain" options="{'no_quick_create': True, 'no_create_edit': True, 'no_open': True}"/>
+                                            <field name="description"/>
+                                            <field name="name" column_invisible="not parent.estimation_id" string="Joinery No." readonly="1"/>
+                                            <field name="rate" widget='monetary'
+                                                    options="{'currency_field': 'currency_id'}"/>/>
+                                            <field name="quantity"/>
+                                            <field name="uom"/>
+                                            <field name="margin" column_invisible="parent.estimation_id"/>
+                                            <field name="margin" string="Initial Margin (%)" column_invisible="not parent.estimation_id"/>
+                                            <field name="margin_diff" readonly="1"/>
+                                            <field name="margin_all" string="Total Margin (%)" column_invisible="not parent.estimation_id"/>
+                                            <field name="subtotal" widget='monetary'
+                                                   options="{'currency_field': 'currency_id'}" readonly="1"/>
+                                        </list>
+                                    </field>
+                                    <group>
+                                        <group class="oe_subtotal_footer d-flex order-0 order-lg-1 estimation_total_footer" invisible="estimation_id and estimation_id.select_all"
+                                           style="width: 100%; justify-content: space-between; align-items: center;">
+                                            <div class="d-flex gap-3 align-items-baseline flex-wrap">
+                                                <!-- Total Cost -->
+                                                <div class="d-flex align-items-baseline gap-1">
+                                                    <label for="total_cost_subcontractor"/>
+                                                    <field name="total_cost_subcontractor" widget="monetary"
+                                                           options="{'currency_field': 'currency_id'}" readonly="1"/>
+                                                </div>
+
+                                                <!-- Margin -->
+                                                <div class="d-flex align-items-baseline gap-1">
+                                                    <label for="total_margin_subcontractor"/>
+                                                    <field name="total_margin_subcontractor" widget="monetary"
+                                                           options="{'currency_field': 'currency_id'}" readonly="1"/>
+                                                </div>
+
+                                                <!-- Margin Percentage -->
+                                                <div class="d-flex align-items-baseline gap-1">
+                                                    <field name="is_subcontractor_margin_manual" invisible="1"/>
+                                                    <label for="margin_percent_subcontractor" string="Initial Margin (%)"/>
+                                                    <field name="margin_percent_subcontractor" readonly="is_subcontractor_margin_manual"/>
+                                                    <button name="action_reset_subcontractor_margins"
+                                                            string="Reset"
+                                                            type="object"
+                                                            class="btn-link"
+                                                            title="Reset all line margins to master margin"
+                                                            invisible="not is_subcontractor_margin_manual"/>
+                                                </div>
+
+                                                <!-- Total Margin -->
+                                                <div class="d-flex align-items-baseline gap-1">
+                                                    <label for="margin_percent_subcontractor_diff" string="Total Margin(%)"/>
+                                                    <field name="margin_percent_subcontractor_diff" widget="monetary"
+                                                           options="{'currency_field': 'currency_id'}" readonly="1"/>
+                                                </div>
+
+                                                <!-- Total -->
+                                                <div class="d-flex align-items-baseline gap-1">
+                                                    <label for="total_subcontractor"/>
+                                                    <field name="total_subcontractor" widget="monetary"
+                                                           options="{'currency_field': 'currency_id'}" readonly="1"/>
+                                                </div>
+                                            </div>
+                                        </group>
+                                        <group class="oe_subtotal_footer d-flex order-0 order-lg-1 estimation_total_footer" invisible="not (estimation_id and estimation_id.select_all)"
+                                           style="width: 100%; justify-content: space-between; align-items: center;">
+                                            <div class="d-flex gap-4 align-items-baseline">
+                                                <!-- Total Cost -->
+                                                <div class="d-flex align-items-baseline gap-1">
+                                                    <label for="total_cost_subcontractor_all"/>
+                                                    <field name="total_cost_subcontractor_all" widget="monetary"
+                                                           options="{'currency_field': 'currency_id'}" readonly="1"/>
+                                                </div>
+
+                                                <!-- Margin -->
+                                                <div class="d-flex align-items-baseline gap-1">
+                                                    <label for="total_margin_subcontractor_all"/>
+                                                    <field name="total_margin_subcontractor_all" widget="monetary"
+                                                           options="{'currency_field': 'currency_id'}" readonly="1"/>
+                                                </div>
+
+                                                <!-- Margin Percentage -->
+                                                <div class="d-flex align-items-baseline gap-1">
+                                                    <label for="margin_percent_subcontractor_all" string="Margin (%)"/>
+                                                    <field name="margin_percent_subcontractor_all" readonly="1"/>
+                                                </div>
+
+                                                <!-- Margin Difference -->
+                                                <div class="d-flex align-items-baseline gap-1">
+                                                    <label for="margin_percent_subcontractor_diff_all"/>
+                                                    <field name="margin_percent_subcontractor_diff_all"/>
+                                                </div>
+
+                                                <!-- Total -->
+                                                <div class="d-flex align-items-baseline gap-1">
+                                                    <label for="total_subcontractor_all"/>
+                                                    <field name="total_subcontractor_all" widget="monetary"
+                                                           options="{'currency_field': 'currency_id'}" readonly="1"/>
+                                                </div>
+                                            </div>
+                                        </group>
+                                    </group>
+                                </page>
+                            </notebook>
+                        </group>
+                        <group style="width:45%">
+                            <notebook>
+                                <page string="Shops">
+                                    <field name="operation_ids" readonly="estimation_id and estimation_id.select_all">
+                                        <list editable="bottom" limit="0" class="o_scrollable_list o_bom_list_200">
+                                            <field name="currency_id" column_invisible="1"/>
+                                            <field name="workcenter_id" column_invisible="1"/>
+                                            <field name="duration" column_invisible="1"/>
+                                            <field name="product_id" required="1" readonly="parent.estimation_id" domain="product_domain" options="{'no_quick_create': True, 'no_create_edit': True}"/>
+                                            <field name="rate" widget='monetary'
+                                                    options="{'currency_field': 'currency_id'}"/>/>
+                                            <field name="quantity"/>
+                                            <field name="uom"/>
+                                            <field name="margin" column_invisible="parent.estimation_id"/>
+                                            <field name="margin" string="Initial Margin (%)" column_invisible="not parent.estimation_id"/>
+                                            <field name="margin_diff" readonly="1"/>
+                                            <field name="margin_all" string="Total Margin (%)" column_invisible="not parent.estimation_id"/>
+                                            <field name="subtotal" widget='monetary'
+                                                   options="{'currency_field': 'currency_id'}" readonly="1"/>
+                                        </list>
+                                    </field>
+                                    <group>
+                                        <group class="oe_subtotal_footer d-flex order-0 order-lg-1 estimation_total_footer" invisible="estimation_id and estimation_id.select_all"
+                                               style="width: 100%; justify-content: space-between; align-items: center;">
+                                            <div class="d-flex gap-3 align-items-baseline flex-wrap">
+                                                <!-- Total Cost -->
+                                                <div class="d-flex align-items-baseline gap-1">
+                                                    <label for="total_cost_operation"/>
+                                                    <field name="total_cost_operation" widget="monetary"
+                                                           options="{'currency_field': 'currency_id'}" readonly="1"/>
+                                                </div>
+                                              
+                                                <!-- Margin -->
+                                                <div class="d-flex align-items-baseline gap-1">
+                                                    <label for="total_margin_operation"/>
+                                                    <field name="total_margin_operation" widget="monetary"
+                                                           options="{'currency_field': 'currency_id'}" readonly="1"/>
+                                                </div>
+
+                                                <!-- Margin Percentage -->
+                                                <div class="d-flex align-items-baseline gap-1">
+                                                    <field name="is_operation_margin_manual" invisible="1"/>
+                                                    <label for="margin_percent_operation" string="Initial Margin (%)"/>
+                                                    <field name="margin_percent_operation" readonly="is_operation_margin_manual"/>
+                                                    <button name="action_reset_operation_margins"
+                                                            string="Reset"
+                                                            type="object"
+                                                            class="btn-link"
+                                                            title="Reset all line margins to master margin"
+                                                            invisible="not is_operation_margin_manual"/>
+                                                </div>
+
+                                                <!-- Total Margin -->
+                                                <div class="d-flex align-items-baseline gap-1">
+                                                    <label for="margin_percent_operation_diff" string="Total Margin(%)"/>
+                                                    <field name="margin_percent_operation_diff" widget="monetary"
+                                                           options="{'currency_field': 'currency_id'}" readonly="1"/>
+                                                </div>
+
+                                                <!-- Total -->
+                                                <div class="d-flex align-items-baseline gap-1">
+                                                    <label for="total_operation"/>
+                                                    <field name="total_operation" widget="monetary"
+                                                           options="{'currency_field': 'currency_id'}" readonly="1"/>
+                                                </div>
+                                            </div>
+                                        </group>
+                                        <group class="oe_subtotal_footer d-flex order-0 order-lg-1 estimation_total_footer" invisible="not (estimation_id and estimation_id.select_all)"
+                                               style="width: 100%; justify-content: space-between; align-items: center;">
+                                            <div class="d-flex gap-4 align-items-baseline">
+                                                <!-- Total Cost -->
+                                                <div class="d-flex align-items-baseline gap-1">
+                                                    <label for="total_cost_operation_all"/>
+                                                    <field name="total_cost_operation_all" widget="monetary"
+                                                           options="{'currency_field': 'currency_id'}" readonly="1"/>
+                                                </div>
+
+                                                <!-- Margin -->
+                                                <div class="d-flex align-items-baseline gap-1">
+                                                    <label for="total_margin_operation_all"/>
+                                                    <field name="total_margin_operation_all" widget="monetary"
+                                                           options="{'currency_field': 'currency_id'}" readonly="1"/>
+                                                </div>
+
+                                                <!-- Margin Percentage -->
+                                                <div class="d-flex align-items-baseline gap-1">
+                                                    <label for="margin_percent_operation_all" string="Margin (%)"/>
+                                                    <field name="margin_percent_operation_all" readonly="1"/>
+                                                </div>
+
+                                                <!-- Margin Difference -->
+                                                <div class="d-flex align-items-baseline gap-1">
+                                                    <label for="margin_percent_operation_diff_all"/>
+                                                    <field name="margin_percent_operation_diff_all"/>
+                                                </div>
+
+                                                <!-- Total -->
+                                                <div class="d-flex align-items-baseline gap-1">
+                                                    <label for="total_operation_all"/>
+                                                    <field name="total_operation_all" widget="monetary"
+                                                           options="{'currency_field': 'currency_id'}" readonly="1"/>
+                                                </div>
+                                            </div>
+                                        </group>
+                                    </group>
+                                </page>
+                            </notebook>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_save_record" string="Save" type="object" class="btn-primary"/>
+                    <button string="Discard" class="btn-secondary" special="cancel" confirm="Are you sure to discard the changes?"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

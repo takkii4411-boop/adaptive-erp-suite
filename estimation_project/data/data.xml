@@ -1,0 +1,71 @@
+<odoo noupdate="1">
+    <record id="est_subtask_01_masters_completed" model="estimation.subtask.template">
+        <field name="sequence">10</field>
+        <field name="name">All masters completed</field>
+    </record>
+
+    <record id="est_subtask_02_project_team_assigned" model="estimation.subtask.template">
+        <field name="sequence">20</field>
+        <field name="name">Project Teams assigned</field>
+    </record>
+
+    <record id="est_subtask_03_handover_checklist" model="estimation.subtask.template">
+        <field name="sequence">30</field>
+        <field name="name">Handover meeting insert checklist</field>
+    </record>
+
+    <record id="est_subtask_04_pm_timeline_forecast" model="estimation.subtask.template">
+        <field name="sequence">40</field>
+        <field name="name">
+            Project Manager to create rough timelines and forecast production
+        </field>
+    </record>
+
+    <record id="est_subtask_05_rfi_pm" model="estimation.subtask.template">
+        <field name="sequence">50</field>
+        <field name="name">RFI from Project Manager</field>
+    </record>
+
+    <record id="est_subtask_06_rfi_drafting" model="estimation.subtask.template">
+        <field name="sequence">60</field>
+        <field name="name">RFI from Drafting Team</field>
+    </record>
+
+    <record id="est_subtask_07_rfi_factory_site" model="estimation.subtask.template">
+        <field name="sequence">70</field>
+        <field name="name">RFI from Factory and Site</field>
+    </record>
+
+    <record id="est_subtask_08_shop_drawing_uploaded" model="estimation.subtask.template">
+        <field name="sequence">80</field>
+        <field name="name">Shop Drawings Uploaded by unit</field>
+    </record>
+
+    <record id="est_subtask_09_shop_drawing_reviewed" model="estimation.subtask.template">
+        <field name="sequence">90</field>
+        <field name="name">
+            Shop Drawings Reviewed by unit by the Project Manager
+        </field>
+    </record>
+
+    <record id="est_subtask_10_shop_drawing_updated" model="estimation.subtask.template">
+        <field name="sequence">100</field>
+        <field name="name">
+            Shop Drawings updated according to the latest review
+        </field>
+    </record>
+
+    <record id="est_subtask_11_shop_drawing_submitted" model="estimation.subtask.template">
+        <field name="sequence">110</field>
+        <field name="name">
+            Shop Drawings submitted to the client for review
+        </field>
+    </record>
+
+    <record id="est_subtask_12_ifc_shop_drawing" model="estimation.subtask.template">
+        <field name="sequence">120</field>
+        <field name="name">
+            IFC Shop Drawings submitted to the client
+        </field>
+    </record>
+</odoo>

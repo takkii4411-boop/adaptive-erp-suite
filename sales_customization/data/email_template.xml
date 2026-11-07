@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="mail_template_estimation_send" model="mail.template">
+            <field name="name">Estimation Send Email</field>
+            <field name="model_id" ref="model_sale_estimation"/>
+            <field name="subject">Estimation {{ object.name }}</field>
+            <field name="email_from">"{{ object.company_id.name }}" &lt;{{ (object.company_id.email or user.email) }}&gt;</field>
+            <field name="email_to">{{ ctx.get('email_to') }}</field>
+            <field name="body_html" type="html">
+                <div>
+                    <p>Hello,</p>
+                    <p>Please find attached estimation
+                        <b>
+                            <t t-out="object.name"/>
+                        </b>
+                    </p>
+                    <p>Regards,
+                        <br/>
+                        <t t-out="object.company_id.name"/>
+                    </p>
+                </div>
+            </field>
+            <field name="report_template_ids" eval="[(4, ref('sales_customization.action_report_custom_estimation'))]"/>
+        </record>
+
+        <record id="sign_role_builder" model="sign.item.role">
+            <field name="name">Builder</field>
+        </record>
+
+        <record id="ir_attachment_estimation" model="ir.attachment">
+            <field name="type">binary</field>
+            <field name="datas" type="base64" file="sales_customization/static/demo/Estimation.pdf"/>
+            <field name="name">estimation.pdf</field>
+        </record>
+
+        <record id="sign_template_estimation" model="sign.template">
+            <field name="name">Estimation Agreement</field>
+        </record>
+
+        <record id="attachment_sign_estimation_document" model="sign.document">
+            <field name="attachment_id" ref="sales_customization.ir_attachment_estimation"/>
+            <field name="template_id" ref="sales_customization.sign_template_estimation" />
+        </record>
+
+        <record id="ir_attachment_estimation" model="ir.attachment">
+            <field name="res_model">sign.template</field>
+            <field name="res_id" ref="sign_template_estimation"/>
+        </record>
+    </data>
+</odoo>

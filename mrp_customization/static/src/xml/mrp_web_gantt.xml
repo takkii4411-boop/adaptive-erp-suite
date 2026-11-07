@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="mrp_customization.GanttRenderer.Pill" t-inherit="web_gantt.GanttRenderer.Pill" t-inherit-mode="primary">
+        <xpath expr="//span[hasclass('o_gantt_pill_title')]" position="replace">
+            <span t-if="pill.record.workorder_no" class="o_gantt_pill_title text-truncate mx-1" t-att-title="'Work Order No: ' + pill.record.workorder_no"><t t-esc="pill.record.workorder_no"/></span>
+            <br/>
+            <span t-if="pill.record.product_id" class="o_gantt_pill_title text-truncate mx-1" t-att-title="'Product: ' + pill.record.product_id?.display_name"><t t-esc="pill.record.product_id?.display_name"/></span>
+        </xpath>
+        <xpath expr="//div[hasclass('o_gantt_pill')]" position="attributes">
+            <attribute name="class">o_gantt_pill position-relative h-100 align-items-center rounded-2"</attribute>
+        </xpath>
+    </t>
+
+</templates>

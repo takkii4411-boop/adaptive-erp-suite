@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-inherit="product.ProductCatalogOrderLine" t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('o_product_catalog_quantity')]" position="attributes">
+            <attribute name="t-att-style">this.env.orderResModel == 'material.list' ? 'display:none;' : 'display:block;'</attribute>
+        </xpath>
+    </t>
+
+    <t t-name="ProductCatalogKanbanControllerInherit" t-inherit="ProductCatalogKanbanController" t-inherit-mode="extension">
+        <xpath expr="//button[hasclass('o-kanban-button-back')]" position="after">
+            <button type="button" class="btn btn-primary o-kanban-button-back" t-on-click="createProduct">Create a Product</button>
+        </xpath>
+    </t>
+
+</templates>

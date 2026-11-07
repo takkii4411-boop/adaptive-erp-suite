@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+ <t t-name="mrp_customization.MrpListView.Buttons" t-inherit="web.ListView">
+      <xpath expr="//Layout/t[@t-set-slot='control-panel-create-button']" position="inside">
+         <button type="button"
+                    class="btn btn-primary me-2"
+                    t-on-click="onClickUploadCSV"
+                    t-if="props.resModel === 'mrp.production'">
+
+                <i class="fa fa-upload me-1"/>
+                Upload CSV
+            </button>
+     </xpath>
+ </t>
+</templates>

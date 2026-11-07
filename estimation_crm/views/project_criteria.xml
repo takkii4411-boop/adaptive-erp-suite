@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- location -->
+    <record id="view_location_qus_tree" model="ir.ui.view">
+        <field name="name">location.qus.tree</field>
+        <field name="model">location.qus</field>
+        <field name="arch" type="xml">
+            <list string="Location" editable="bottom">
+                <field name="name"/>
+                <field name="score"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_location_qus_form" model="ir.ui.view">
+        <field name="name">location.qus.form</field>
+        <field name="model">location.qus</field>
+        <field name="arch" type="xml">
+            <form string="Location">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="score"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_location_qus" model="ir.actions.act_window">
+        <field name="name">Location</field>
+        <field name="res_model">location.qus</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- size -->
+    <record id="view_size_qus_tree" model="ir.ui.view">
+        <field name="name">size.qus.tree</field>
+        <field name="model">size.qus</field>
+        <field name="arch" type="xml">
+            <list string="Size" editable="bottom">
+                <field name="name"/>
+                <field name="score"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_size_qus_form" model="ir.ui.view">
+        <field name="name">size.qus.form</field>
+        <field name="model">size.qus</field>
+        <field name="arch" type="xml">
+            <form string="Size">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="score"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_size_qus" model="ir.actions.act_window">
+        <field name="name">Size</field>
+        <field name="res_model">size.qus</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- complexity -->
+    <record id="view_complexity_qus_tree" model="ir.ui.view">
+        <field name="name">complexity.qus.tree</field>
+        <field name="model">complexity.qus</field>
+        <field name="arch" type="xml">
+            <list string="Complexity" editable="bottom">
+                <field name="name"/>
+                <field name="score"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_complexity_qus_form" model="ir.ui.view">
+        <field name="name">complexity.qus.form</field>
+        <field name="model">complexity.qus</field>
+        <field name="arch" type="xml">
+            <form string="Complexity">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="score"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_complexity_qus" model="ir.actions.act_window">
+        <field name="name">Complexity</field>
+        <field name="res_model">complexity.qus</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- builder -->
+    <record id="view_builder_qus_tree" model="ir.ui.view">
+        <field name="name">builder.qus.tree</field>
+        <field name="model">builder.qus</field>
+        <field name="arch" type="xml">
+            <list string="Builder" editable="bottom">
+                <field name="name"/>
+                <field name="score"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_builder_qus_form" model="ir.ui.view">
+        <field name="name">builder.qus.form</field>
+        <field name="model">builder.qus</field>
+        <field name="arch" type="xml">
+            <form string="Builder">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="score"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_builder_qus" model="ir.actions.act_window">
+        <field name="name">Builder</field>
+        <field name="res_model">builder.qus</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- type -->
+    <record id="view_type_qus_tree" model="ir.ui.view">
+        <field name="name">type.qus.tree</field>
+        <field name="model">type.qus</field>
+        <field name="arch" type="xml">
+            <list string="Type" editable="bottom">
+                <field name="name"/>
+                <field name="score"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_type_qus_form" model="ir.ui.view">
+        <field name="name">type.qus.form</field>
+        <field name="model">type.qus</field>
+        <field name="arch" type="xml">
+            <form string="Type">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="score"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_type_qus" model="ir.actions.act_window">
+        <field name="name">Type</field>
+        <field name="res_model">type.qus</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- likelihood -->
+    <record id="view_likelihood_qus_tree" model="ir.ui.view">
+        <field name="name">likelihood.qus.tree</field>
+        <field name="model">likelihood.qus</field>
+        <field name="arch" type="xml">
+            <list string="Likelihood" editable="bottom">
+                <field name="name"/>
+                <field name="score"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_likelihood_qus_form" model="ir.ui.view">
+        <field name="name">likelihood.qus.form</field>
+        <field name="model">likelihood.qus</field>
+        <field name="arch" type="xml">
+            <form string="Likelihood">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <group>
+                            <field name="score"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_likelihood_qus" model="ir.actions.act_window">
+        <field name="name">Likelihood</field>
+        <field name="res_model">likelihood.qus</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_all_qus_form" model="ir.ui.view">
+        <field name="name">question.base.form</field>
+        <field name="model">question.base</field>
+        <field name="arch" type="xml">
+            <form string="Project Criteria">
+                <header>
+                    <button type="object" name="action_open_view" string="New" class="btn-primary"/>
+                </header>
+                <sheet>
+                    <group>
+                        <label for="name" class="d-inline-block"/>
+                        <div id="name" class="d-flex">
+                            <field name="name" class="oe_inline o_input_6ch"/>
+                        </div>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_all_qus" model="ir.actions.act_window">
+        <field name="name">Project Criteria</field>
+        <field name="res_model">question.base</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_project_criteria"
+              name="Project Criteria"
+              parent="crm.crm_menu_config"
+              action="action_all_qus"
+              sequence="7"/>
+</odoo>

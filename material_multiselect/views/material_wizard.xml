@@ -1,0 +1,31 @@
+<odoo>
+    <record id="view_material_multiselect_wizard_form" model="ir.ui.view">
+        <field name="name">material.multiselect.wizard.form</field>
+        <field name="model">material.multiselect.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Select Materials">
+                <group>
+                    <field name="product_ids"
+                           widget="one2many"
+                           domain="product_domain"
+                           nolabel="1"
+                           options="{'no_create': True, 'no_open': True}"/>
+                </group>
+                <footer>
+                    <button name="action_add_materials"
+                            type="object"
+                            string="Save"
+                            class="btn-primary"/>
+                    <button string="Discard" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_material_multiselect_wizard" model="ir.actions.act_window">
+        <field name="name">Select Materials</field>
+        <field name="res_model">material.multiselect.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

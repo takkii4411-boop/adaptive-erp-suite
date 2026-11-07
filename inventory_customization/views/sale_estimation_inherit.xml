@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_sale_estimation_form_inherit_material_hardware" model="ir.ui.view">
+        <field name="name">sale.estimation.form.inherit.material.hardware</field>
+        <field name="model">sale.estimation</field>
+        <field name="inherit_id" ref="sales_customization.view_sale_estimation_type_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//group[@name='not_display_details']//button[@name='action_materials_open']" position="after">
+                <button type="object"
+                       name="action_open_material_hardware_details"
+                       string="Material &amp; Hardware Details"
+                       class="btn btn-link"/>
+            </xpath>
+
+            <xpath expr="//group[@name='display_details']//button[@name='action_materials_open']" position="after">
+                <button type="object"
+                        name="action_open_material_hardware_details"
+                        string="Material &amp; Hardware Details"
+                        class="btn btn-link"/>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>
