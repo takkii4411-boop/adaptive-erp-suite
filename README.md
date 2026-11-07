@@ -2,7 +2,7 @@
 
 ![Odoo](https://img.shields.io/badge/Odoo-19.0-purple) ![Modules](https://img.shields.io/badge/Custom%20Modules-12-blue) ![License](https://img.shields.io/badge/License-LGPL--3-green)
 
-A **sales-estimation centric ERP suite** for Odoo 19 — a full **Estimation module family** (CRM, Sale, Project, Documents, Reports) plus targeted customizations in **MRP, Inventory, Purchase and Sales**. All modules = client-required features, modifications & debugging on Odoo 19 core flows.
+A **sales-estimation centric ERP suite** for Odoo 19 — a full **Estimation module family** (CRM, Sale, Project, Documents, Reports) plus targeted customizations in **MRP, Inventory, Purchase and Sales**, developed as client-required features on Odoo 19 core flows. **My role in this suite: small enhancements, fixes & debugging (MRP/inventory tweaks, chatter positioning, wizard close-warning, report adjustments)** — the suite belongs to a team build; bundled here as context of the delivery.
 
 ```
 adaptive-erp-suite/
